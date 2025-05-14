@@ -3,6 +3,11 @@ from models.profesor import Teacher
 
 class TeacherRepository(BaseRepository):
 
+    def existing_teacher(self, mail):
+        query = 'SELECT * FROM teachers WHERE mail = %s'
+        row = self.get_one(query, (mail,))
+        return row[0] if row else None
+        
     def get_byMail(self, mail) ->Teacher: # 1 
         query = 'SELECT * FROM teachers WHERE mail = %s'
         row = self.get_one(query, (mail))
