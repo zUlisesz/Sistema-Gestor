@@ -19,3 +19,4 @@ class BaseRepository:
         rows = self.cursor.fetchall()
         return rows
     
+    
