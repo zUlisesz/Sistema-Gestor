@@ -11,6 +11,8 @@ class Student(User):
     def show_myself(self):
         return super().show_myself() + f' - average: {self.average} - career: {self.career}'
     
+    def show_currentCourses(self):
+        return [str(element) for element in self.courses]
     
     #complete these methods, they´re not completed
     def send_task(self):

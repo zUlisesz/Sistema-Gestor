@@ -9,3 +9,8 @@ class Teacher(User):
     #correct the method
     def give_task_back(self):
         print('giving the task back')
+        
+    def show_currentCourses(self):
+        return [str(element) for element in self.courses]
+    
+    
