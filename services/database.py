@@ -1,11 +1,17 @@
 import mysql.connector
 
 def connect_db():
-    return mysql.connector.connect(
-        host = 'myhost',
-        user = 'username',
-        password = 'password',
-        database = 'namedb'
-    )
+    try: 
+        conn = mysql.connector.connect(
+            host = '127.0.0.1',
+            user = 'root',
+            password = 'Interesting.Eminem',
+            database = 'gestor_escuela',
+            port = '3306'
+        ) 
+    except mysql.connector.Error as e:
+        print(f'{e}')
+        
+    return conn
+
     
-#gotta set the correct values tu the entries of the function
