@@ -43,7 +43,7 @@ class StudentRepository(BaseRepository):
         rows = self.get_all(query)
         return [Student(*row) for row in rows]
 
-    def get_by_id(self, user_id) -> Student | None:
+    def get_by_id(self, user_id) -> Student | None: #rhis method returns onely one row
         query = """
             SELECT u.id, u.name, u.mail,password, sd.career, sd.average
             FROM users u
