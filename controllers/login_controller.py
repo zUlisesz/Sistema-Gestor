@@ -1,4 +1,5 @@
 from repositories.usuario_repository import UserRepository
+import re
 
 class LoginController():
     
@@ -37,19 +38,36 @@ class LoginController():
         
         if self.right_password(mail, password):
             self.redirecting(mail)
-            
+          
+    def correct_data(self, name, mail, password, rol):
+    
+        if not isinstance(name, str) or len(name.strip()) == 0:
+            return False
+        
+        email_pattern = r'^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$'
+        if not isinstance(mail, str) or not re.match(email_pattern, mail):
+            return False
+        
+        if not isinstance(password, str) or len(password) < 8:
+            return False
+        
+        allowed_roles = ['admin', 'student', 'teacher'] 
+        if not isinstance(rol, str) or rol not in allowed_roles:
+            return False
+    
+        return True
+  
     def sign_up(self):
-        try: 
-            query =  'INSERT INTO users(name, mail, password, rol) VALUES (%s , %s , %s, %s)'
-            name = input('Name: \n')
-            mail = input('Mail: \n')
-            password = input('Password: \n')
-            rol = input('Rol: \n')
-            
+        query =  'INSERT INTO users(name, mail, password, rol) VALUES (%s , %s , %s, %s)'
+        name = input('Name: \n')
+        mail = input('Mail: \n')
+        password = input('Password: \n')
+        rol = input('Rol: \n')
+        
+        if self.correct_data(name ,mail ,password, rol):
             self.user_repository.execute(query, (name,mail,password,rol))
             print('user added successfully')
+        else:
+            print('It seems that you did`t type the correct data')
             
-        except:
-            print('Error')
-    
-         
+ 
