@@ -1,6 +1,6 @@
 from repositories.usuario_repository import UserRepository
 
-class AuthController():
+class LoginController():
     
     def __init__(self):
         self.user_repository = UserRepository()
@@ -16,18 +16,23 @@ class AuthController():
                 return True
             else:
                 print('wrong pasword')
+        
+        print('user not in the system')
+        return False
             
- 
     def redirecting(self, mail):
-        if self.right_password(): 
-            rol = self.user_repository.existing_mail(mail)
-            if rol == 'student':
-                print('directing to studnt view . . .')
-            elif rol == 'teacher':
-                print('directing to tecaher view . . . ')
-            else:
-                print('directing to admin view . . .')
+        rol = self.user_repository.get_rol(mail)
+        if rol == 'student':
+            print('directing to student view . . .')
+        elif rol == 'teacher':
+            print('directing to teacher view . . . ')
         else:
-            print('it seems you don´t have an account yet')
-    
-    
+            print('directing to admin view . . .')
+            
+    def login(self):
+        mail  = input('Insert your email: \n')  
+        password = input('Type your password: \n') 
+        
+        if self.right_password(mail, password):
+            self.redirecting(mail)
+ 

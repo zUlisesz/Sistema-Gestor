@@ -7,15 +7,18 @@ class UserRepository(BaseRepository):
     def get_mail_pass(self, mail) :
         query = "SELECT mail,password FROM users WHERE mail = %s"
         rows = self.get_one(query, (mail,))
-        return rows
+        return rows if rows is not None else None
     
     def existing_mail(self, mail):
-        query = "SELECT rol FROM users WHERE mail = %s"
+        query = "SELECT * FROM users WHERE mail = %s"
         row  = self.get_one(query, (mail,))
+        return row[0] if row is not None else None
+    
+    def get_rol(self, mail):
+        query = "SELECT rol FROM users WHERE mail = %s"
+        row = self.get_one(query, (mail,))
         return row[0]
     
-    
-        
     #methods for the teachers table
     def get_teachers(self) -> list:
         query = "SELECET * FROM users WHERE rol = %s"
