@@ -1,6 +1,7 @@
 from repositories.base import BaseRepository
-from repositories.usuario_repository import UserRepository
+from repositories.user_repository import UserRepository
 from controllers.login_controller import LoginController
+from repositories.student_repository import StudentRepository
 
 def admin_controller():
     
@@ -23,5 +24,15 @@ def printUser():
     
 ctr = LoginController()
 
-printUser()  
-ctr.login()
+
+#printUser()  
+#ctr.login()
+
+
+repo = StudentRepository()
+student = repo.get_by_id(13)
+print(student.name, student.career)
+
+all_students = repo.get_all_students()
+for s in all_students:
+    print(f"{s.name} - {s.career} - {s.average}")

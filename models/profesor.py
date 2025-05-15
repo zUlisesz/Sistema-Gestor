@@ -1,9 +1,9 @@
-from .usuario import User
+from .user import User
 
 class Teacher(User):
     
-    def __init__(self, name, mail, password):
-        super().__init__(name, mail, password)
+    def __init__(self, id, name, mail, password):
+        super().__init__(id, name, mail, password)
         self.courses = []
         
     #correct the method

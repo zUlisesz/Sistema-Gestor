@@ -1,12 +1,13 @@
-from .usuario import User
+from .user import User
 
 class Student(User):
     
-    def __init__(self, name, mail, password, career):
-        super().__init__(name, mail, password)
-        self.average = 0  #gotta change this value later
+    def __init__(self, id, name, mail, password, career, average:None ):
+        super().__init__(id, name, mail, password)
+        self.career = career
+        self.average = average
         self.courses = []
-        self.career  = career
+        
 
     def show_myself(self):
         return super().show_myself() + f' - average: {self.average} - career: {self.career}'

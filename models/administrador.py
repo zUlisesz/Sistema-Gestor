@@ -1,8 +1,8 @@
-from .usuario import User
+from .user import User
 
 class Admin(User):
-    def __init__(self, name, mail, password):
-        super().__init__(name, mail, password)
+    def __init__(self,id,  name, mail, password):
+        super().__init__(id, name, mail, password)
         
     def create_course(self, name, limit, career):
         print(f'New course: {name} - {limit} - {career}')

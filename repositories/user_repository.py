@@ -1,6 +1,6 @@
 from .base import BaseRepository
 from models.profesor import Teacher
-from models.alumno import Student
+from models.student import Student
 
 class UserRepository(BaseRepository):
 
@@ -39,24 +39,3 @@ class UserRepository(BaseRepository):
         row = self.get_one(query, (mail, 'teacher'))
         return Teacher(*row) if row else None
 
-    # Métodos para la tabla de estudiantes - - -  Fantan correcciones en la bd
-
-    def get_by_career(self, career) -> list:
-        query = "SELECT * FROM students_ WHERE career = %s"
-        rows = self.get_all(query, (career,))
-        return [Student(*row) for row in rows]
-
-    def get_approved(self) -> list:
-        query = "SELECT * FROM students_ WHERE average >= 6"
-        rows = self.get_all(query)
-        return [Student(*row) for row in rows]
-
-    def get_failed(self) -> list:
-        query = "SELECT * FROM students_ WHERE average < 6"
-        rows = self.get_all(query)
-        return [Student(*row) for row in rows]
-
-    def get_excellent(self) -> list:
-        query = "SELECT * FROM students_ WHERE average > 9.4"
-        rows = self.get_all(query)
-        return [Student(*row) for row in rows]
