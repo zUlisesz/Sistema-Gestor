@@ -1,7 +1,8 @@
 class Course:
-    def __init__(self, id, name, limit, career):
+    def __init__(self, id, name, description, limit, career):
         self.id_course = id
         self.name = name
+        self.description = description
         self.limit = limit 
         self.career = career
         self.students = []
