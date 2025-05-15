@@ -1,4 +1,5 @@
 from repositories.base import BaseRepository
+from controllers.validation_controller import AuthController
 
 def admin_controller():
     
@@ -10,6 +11,23 @@ def admin_controller():
     admins = dnd.get_all(select,())
 
     print(admins)
+ 
+def add_user():
+    query =  'INSERT INTO users(name, mail, password, rol) VALUES (%s , %s , %s, %s)'
+    rol = 'student'
+    
+    name = input('Name: \n')
+    mail = input('Mail: \n')
+    password = input('Password: \n')
+    
+    dnd = BaseRepository()
+    
+    dnd.execute(query, (name , mail, password, rol))
+    print('user added successfuly')
     
 def login():
-    pass
+    mail  = input('InSert your email: \n')  
+    auth = AuthController()
+    print(auth.existing_user(mail))
+    
+login()

@@ -4,10 +4,15 @@ from models.alumno import Student
 
 class UserRepository(BaseRepository):
     
-    def get_usersMail(self) -> list :
+    def get_usersMail(self) :
         query = "SELECT mail FROM users"
         rows = self.get_all(query, ())
         return rows
+    
+    def existing_mail(self, mail):
+        query = "SELECT mail FROM users WHERE mail = %s"
+        row  = self.get_one(query, (mail,))
+        return row
         
     #methods for the teachers table
     def get_teachers(self) -> list:

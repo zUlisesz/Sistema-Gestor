@@ -6,7 +6,7 @@ class AuthController():
         self.user_repository = UserRepository()
         
     def existing_user(self, mail):
-        return True if mail in self.user_repository.get_usersMail() else False
+        return True if self.user_repository.existing_mail(mail) else False
     
     
             
