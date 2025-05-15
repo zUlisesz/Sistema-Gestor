@@ -29,10 +29,14 @@ ctr = LoginController()
 #ctr.login()
 
 
-repo = StudentRepository()
-student = repo.get_by_id(13)
-print(student.name, student.career)
+def printStudents():
+    repo = StudentRepository()
+    
+    #student = repo.get_by_id(13)
+    #print(student.name, student.career)
 
-all_students = repo.get_all_students()
-for s in all_students:
-    print(f"{s.name} - {s.career} - {s.average}")
+    all_students = repo.get_all_students()
+    for s in all_students:
+        print(f"{s.name} - {s.career} - {s.average}")
+
+#printStudents()
