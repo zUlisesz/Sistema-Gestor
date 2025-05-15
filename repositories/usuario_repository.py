@@ -10,9 +10,9 @@ class UserRepository(BaseRepository):
         return rows
     
     def existing_mail(self, mail):
-        query = "SELECT mail FROM users WHERE mail = %s"
+        query = "SELECT rol FROM users WHERE mail = %s"
         row  = self.get_one(query, (mail,))
-        return row
+        return row[0]
         
     #methods for the teachers table
     def get_teachers(self) -> list:

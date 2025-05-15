@@ -6,7 +6,15 @@ class AuthController():
         self.user_repository = UserRepository()
         
     def existing_user(self, mail):
-        return True if self.user_repository.existing_mail(mail) else False
+        if self.user_repository.existing_mail(mail): 
+            rol = self.user_repository.existing_mail(mail)
+            if rol == 'student':
+                print('directing to studnt view . . .')
+            elif rol == 'teacher':
+                print('directing to tecaher view . . . ')
+            else:
+                print('directing to admin view . . .')
+        else:
+            print('it seems you don´t have an account yet')
     
     
-            

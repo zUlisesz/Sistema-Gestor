@@ -28,6 +28,6 @@ def add_user():
 def login():
     mail  = input('InSert your email: \n')  
     auth = AuthController()
-    print(auth.existing_user(mail))
+    auth.existing_user()
     
 login()
