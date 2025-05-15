@@ -71,6 +71,10 @@ class LoginController:
         password = input('Contraseña (mínimo 8 caracteres): \n')
         rol = input('Rol (admin, student, teacher): \n')
 
+        if self.existing_user(mail):
+            print('Usuario ya registrado')
+            return 0 
+        
         if self.correct_data(name, mail, password, rol):
             hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
             query = 'INSERT INTO users(name, mail, password, rol) VALUES (%s, %s, %s, %s)'
