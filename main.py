@@ -2,6 +2,7 @@ from repositories.base import BaseRepository
 from repositories.user_repository import UserRepository
 from controllers.login_controller import LoginController
 from repositories.student_repository import StudentRepository
+from views.login_view import login
 
 def admin_controller():
     
@@ -40,3 +41,4 @@ def printStudents():
         print(f"{s.name} - {s.career} - {s.average}")
 
 #printStudents()
+login()
