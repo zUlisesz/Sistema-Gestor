@@ -8,6 +8,11 @@ class UserRepository(BaseRepository):
         query = "SELECT mail, password FROM users WHERE mail = %s"
         row = self.get_one(query, (mail,))
         return row if row else None
+    
+    def get_id(self, mail):
+        query = 'SELECT id from users WHERE mail = %s'
+        row = self.get_one(query,(mail,))
+        return row[0] if row else None
 
     def existing_mail(self, mail):
         query = "SELECT 1 FROM users WHERE mail = %s"

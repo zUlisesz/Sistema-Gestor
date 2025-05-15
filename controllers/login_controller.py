@@ -66,6 +66,7 @@ class LoginController:
         return True
 
     def sign_up(self):
+        
         name = input('Nombre: \n')
         mail = input('Correo: \n')
         password = input('Contraseña (mínimo 8 caracteres): \n')
@@ -76,9 +77,18 @@ class LoginController:
             return 0 
         
         if self.correct_data(name, mail, password, rol):
+            
             hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
             query = 'INSERT INTO users(name, mail, password, rol) VALUES (%s, %s, %s, %s)'
             self.user_repository.execute(query, (name, mail, hashed_password, rol))
+            
+            if rol == 'student':
+                id = self.user_repository.get_id(mail)
+                career = input('Carrera a la que perteneces: \n')
+                query  = 'INSERT INTO student_data(user_id,  career) VALUES (%s, %s)'
+                self.user_repository.execute(query,(id, career))
+                
             print(f'Usuario registrado exitosamente.')
+                
         else:
             print('Los datos proporcionados no son válidos.')
