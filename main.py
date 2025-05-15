@@ -1,4 +1,5 @@
 from repositories.base import BaseRepository
+from repositories.usuario_repository import UserRepository
 from controllers.login_controller import LoginController
 
 def admin_controller():
@@ -14,7 +15,7 @@ def admin_controller():
  
 def add_user():
     query =  'INSERT INTO users(name, mail, password, rol) VALUES (%s , %s , %s, %s)'
-    rol = 'student'
+    rol = 'admin'
     
     name = input('Name: \n')
     mail = input('Mail: \n')
@@ -26,4 +27,9 @@ def add_user():
     print('user added successfuly')
     
 ctr = LoginController()
-ctr.login()
+dnd = UserRepository()
+
+users = dnd.get_all_users()
+
+for element in users:
+    print(element)

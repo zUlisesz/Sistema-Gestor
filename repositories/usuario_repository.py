@@ -19,6 +19,11 @@ class UserRepository(BaseRepository):
         row = self.get_one(query, (mail,))
         return row[0]
     
+    def get_all_users(self):
+        query = 'SELECT * FROM users'
+        rows = self.get_all(query, ())
+        return rows
+    
     #methods for the teachers table
     def get_teachers(self) -> list:
         query = "SELECET * FROM users WHERE rol = %s"
