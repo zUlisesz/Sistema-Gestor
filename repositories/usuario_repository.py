@@ -4,6 +4,11 @@ from models.alumno import Student
 
 class UserRepository(BaseRepository):
     
+    def get_usersMail(self) -> list :
+        query = "SELECT mail FROM users"
+        rows = self.get_all(query, ())
+        return rows
+        
     #methods for the teachers table
     def get_teachers(self) -> list:
         query = "SELECET * FROM users WHERE rol = %s"
@@ -17,11 +22,6 @@ class UserRepository(BaseRepository):
             return Teacher(*row)
         
     #methods for the students table
-    def get_byMail(self ,mail) -> Student:
-        query = 'SELECT * FROM students_ WHERE mail = %s'
-        row = self.get_one( query, (mail))
-        if row:
-            return Student(*row)
         
     def get_by_career(self, career) ->list :
         query = 'SELECT * FROM students_ WHERE career = %s'
