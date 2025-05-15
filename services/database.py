@@ -11,7 +11,5 @@ def connect_db():
         ) 
     except mysql.connector.Error as e:
         print(f'{e}')
-        
+           
     return conn
-
-connect_db()

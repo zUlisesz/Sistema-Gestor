@@ -27,7 +27,8 @@ def add_user():
     
 def login():
     mail  = input('InSert your email: \n')  
+    password = input('Type your password: \n')    
     auth = AuthController()
-    auth.existing_user()
+    auth.right_password(mail, password)
     
 login()
