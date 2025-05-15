@@ -6,7 +6,7 @@ def connect_db():
             host = '127.0.0.1',
             user = 'root',
             password = 'Interesting.Eminem',
-            database = 'gestor_escuela',
+            database = 'gestor',
             port = '3306'
         ) 
     except mysql.connector.Error as e:
@@ -14,4 +14,4 @@ def connect_db():
         
     return conn
 
-    
+connect_db()
