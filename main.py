@@ -23,5 +23,5 @@ def printUser():
     
 ctr = LoginController()
 
-    
+#printUser()   
 ctr.login()
