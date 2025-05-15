@@ -16,9 +16,11 @@ class LoginController():
                 return True
             else:
                 print('wrong pasword')
+                return False
         
         print('user not in the system')
-        return False
+        print('Sign up')
+        self.sign_up()
             
     def redirecting(self, mail):
         rol = self.user_repository.get_rol(mail)
@@ -35,4 +37,19 @@ class LoginController():
         
         if self.right_password(mail, password):
             self.redirecting(mail)
- 
+            
+    def sign_up(self):
+        try: 
+            query =  'INSERT INTO users(name, mail, password, rol) VALUES (%s , %s , %s, %s)'
+            name = input('Name: \n')
+            mail = input('Mail: \n')
+            password = input('Password: \n')
+            rol = input('Rol: \n')
+            
+            self.user_repository.execute(query, (name,mail,password,rol))
+            print('user added successfully')
+            
+        except:
+            print('Error')
+    
+         
