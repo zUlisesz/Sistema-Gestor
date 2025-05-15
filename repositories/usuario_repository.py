@@ -1,13 +1,22 @@
 from .base import BaseRepository
+from models.profesor import Teacher
 from models.alumno import Student
 
-class StudentRepository(BaseRepository):
+class UserRepository(BaseRepository):
     
-    def existing_student(self, mail):
-        query = 'SELECT name FROM students_ WHERE mail = %s'
-        row = self.get_one(query,(mail,)) 
-        return row[0] if row else None
+    #methods for the teachers table
+    def get_teachers(self) -> list:
+        query = "SELECET * FROM users WHERE rol = %s"
+        rows = self.get_all(query, ())
+        return [Teacher(*row) for row in rows]
     
+    def get_byMail(self, mail) ->Teacher: # 1 
+        query = 'SELECT * FROM teachers WHERE mail = %s'
+        row = self.get_one(query, (mail))
+        if row:
+            return Teacher(*row)
+        
+    #methods for the students table
     def get_byMail(self ,mail) -> Student:
         query = 'SELECT * FROM students_ WHERE mail = %s'
         row = self.get_one( query, (mail))
