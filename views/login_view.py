@@ -1,15 +1,15 @@
 import flet as ft
 
 def login(page: ft.Page):
-    page.horizontal_alignment = ft.MainAxisAlignment.CENTER
-    page.vertical_alignment = ft.CrossAxisAlignment.CENTER
     
-    page.theme_mode = ft.ThemeMode.DARK
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.theme = ft.ThemeMode.DARK
+    page.title = 'INICIO DE SECIÓN'
     
-    page.add(
-        ft.TextField(label= 'TU CORREO'),
-        ft.TextField(label = 'TU CONTRASEÑA'),
-        ft.ElevatedButton('INICIAR SECIÖN', elevation= 8)
-    )
-
-ft.app( target= login)
+    email = ft.TextField(label = 'Correo electrónico', width= 360)
+    password = ft.TextField(label = 'Contraseña', width= 360)
+    
+    page.add(email)
+    
+ft.app(target= login)
