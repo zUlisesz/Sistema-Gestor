@@ -4,6 +4,7 @@ from controllers.login_controller import LoginController
 from repositories.student_repository import StudentRepository
 from repositories.course_repository import CourseRepository
 from repositories.studentCouse_repository import StudentCourseRepository
+from views.login_view import main
 
 def register_student_into_course(user, course):
     fx = StudentCourseRepository()
@@ -58,6 +59,6 @@ def printStudents():
 def start():
     dnd = LoginController()
     dnd.login()
-#printStudents()
 
 
+main()

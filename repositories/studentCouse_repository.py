@@ -6,3 +6,4 @@ class StudentCourseRepository(BaseRepository):
         query = 'INSERT INTO gestor.students_courses VALUES (%s, %s)'
         self.execute(query,(student_id, course_id) )
         print('Alumno inscrito al curso')
+        
