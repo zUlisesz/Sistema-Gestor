@@ -1,15 +1,15 @@
 class Course:
-    def __init__(self, id, name, description, limit, career):
+    def __init__(self, id, name, description, space, career):
         self.id_course = id
         self.name = name
         self.description = description
-        self.limit = limit 
+        self.space = space 
         self.career = career
         self.students = []
         self.teacher = None 
         
     def show_myself(self) -> str:
-        return f'id: {self.id_course} - {self.name} -limit: {self.limit} - career: {self.career} - teacher: {self.teacher}'
+        return f'id: {self.id_course} - {self.name} -limit: {self.space} - career: {self.career} - teacher: {self.teacher}'
     
     def add_student(self, student) -> None:
         self.students.append(student)

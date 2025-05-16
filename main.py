@@ -2,6 +2,7 @@ from repositories.base import BaseRepository
 from repositories.user_repository import UserRepository
 from controllers.login_controller import LoginController
 from repositories.student_repository import StudentRepository
+from repositories.course_repository import CourseRepository
 
 def admin_controller():
     
@@ -24,14 +25,20 @@ def printUser():
     
 def addCourse():
     dnd = BaseRepository()
-    query = 'INSERT INTO courses VALUES(%s, %s, %s, %s)'
+    query = 'INSERT INTO courses(name, description, space, career) VALUES(%s, %s, %s, %s)'
     
-    name = 'Algebra lineal'
-    description = 'Estudio de espacios vectoriales'
+    name = 'Fundamentos matemáticos'
+    description = 'Estudio de axiomas, teoría de conjuntos, lógica matemática y demostraciones'
     career = 'Ciencias de la computacion'
-    limit = 40
+    space = 40
     
-    dnd.execute(query, (name , description, limit, career))
+    dnd.execute(query, (name , description, space, career))
+    
+def printCourses():
+    cd  = CourseRepository()
+    tuples = cd.get_all_courses()
+    for element in tuples:
+        print(element.show_myself())
     
 def printStudents():
     repo = StudentRepository()
@@ -43,5 +50,4 @@ def printStudents():
     for s in all_students:
         print(f"{s.name} - {s.career} - {s.average}")
 
-addCourse()
 #printStudents()
