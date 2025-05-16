@@ -3,6 +3,11 @@ from repositories.user_repository import UserRepository
 from controllers.login_controller import LoginController
 from repositories.student_repository import StudentRepository
 from repositories.course_repository import CourseRepository
+from repositories.studentCouse_repository import StudentCourseRepository
+
+def register_student_into_course(user, course):
+    fx = StudentCourseRepository()
+    fx.register_student(user, course)
 
 def admin_controller():
     
@@ -48,6 +53,11 @@ def printStudents():
 
     all_students = repo.get_all_students()
     for s in all_students:
-        print(f"{s.name} - {s.career} - {s.average}")
+        print(f"id: {s.id } - {s.name} - {s.career} - {s.average}")
 
+def start():
+    dnd = LoginController()
+    dnd.login()
 #printStudents()
+
+
