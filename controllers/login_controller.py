@@ -11,7 +11,7 @@ class LoginController:
 
     def is_password_correct(self, mail, password):
         if not self.existing_user(mail):
-            return False, "Usuario no registrado."
+            return False, "Usuario no registrado. Crea una cuenta antes de iniciar sesión."
 
         user_data = self.user_repository.get_mail_pass(mail)
         if user_data is None:
