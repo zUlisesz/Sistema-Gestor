@@ -28,6 +28,8 @@ def student_view(page: ft.Page):
 
     
     def inscribirme_a_curso(e):
+        std = StudentController()
+        
         id_student_field = ft.TextField(label= 'Id de estudiante', width= 300)
         id_course_field = ft.TextField(label= 'Id del curso', width= 300)
         
@@ -37,9 +39,10 @@ def student_view(page: ft.Page):
             id_course_field = ''
             
         def event(e):
-            std = StudentController()
-            std.enter_to_course(int(id_course_field.value), int(id_course_field.value))
+            std.enter_to_course(int(id_student_field.value), int(id_course_field.value))
+            create_container()
             reset_values()
+            page.close(alert)
         
         alert = ft.BottomSheet(
             content= ft.Container(
@@ -62,24 +65,25 @@ def student_view(page: ft.Page):
         )
         
         page.open(alert)
-        new_course_card = ft.Container(
-            width=200,
-            height=200,
-            bgcolor="#e0e7ff", 
-            border_radius=10,
-            alignment=ft.alignment.center,
-            content=ft.Text("Nuevo curso", size=16, weight=ft.FontWeight.BOLD),
-            padding=10,
-            margin=5,
-        )
         
-        if len(course_cards_column.controls) <= 4 :    
-            course_cards_column.controls.append(new_course_card)
-        elif len(course_cards_column2.controls) <= 4:
-            course_cards_column2.controls.append(new_course_card)
+        def create_container():
+            new_course_card = ft.Container(
+                width=200,
+                height=200,
+                bgcolor="#e0e7ff", 
+                border_radius=10,
+                alignment=ft.alignment.center,
+                content=ft.Text(std.get_course(int(id_course_field.value)), size=16, weight=ft.FontWeight.BOLD),
+                padding=10,
+                margin=5,
+            )
+        
+            if len(course_cards_column.controls) <= 4 :    
+                course_cards_column.controls.append(new_course_card)
+            elif len(course_cards_column2.controls) <= 4:
+                course_cards_column2.controls.append(new_course_card)
     
-            
-        page.update()
+            page.update()
 
    
     sidebar = ft.Container(
