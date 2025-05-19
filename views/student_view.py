@@ -1,6 +1,7 @@
 import flet as ft
 
 def student_view(page: ft.Page):
+    page.controls.clear()
     page.title = "Panel Estudiante"
     page.theme_mode = ft.ThemeMode.LIGHT
     page.bgcolor = "#f3f4f6"

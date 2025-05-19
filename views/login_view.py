@@ -1,6 +1,7 @@
 import flet as ft
 from controllers.login_controller import LoginController
 from .signup_view import signup_view
+from .student_view import student_view
 
 log = LoginController()
 
@@ -26,6 +27,7 @@ def login_view(page: ft.Page):
         if success:
             status_text.value = message
             status_text.color = ft.Colors.GREEN
+            student_view(page)
             page.update()
             page.go(f"/{rol}")  #redirectingo to the appropiate screen
         else:
