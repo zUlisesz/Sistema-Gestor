@@ -62,25 +62,26 @@ def start():
     dnd = LoginController()
     dnd.login()
 
-import flet as ft
-from views.login_view import login_view
-from views.signup_view import signup_view
+def run():
+    import flet as ft
+    from views.login_view import login_view
+    from views.signup_view import signup_view
 
-def main(page: ft.Page):
+    def main(page: ft.Page):
 
-    def route_change(e):
-        page.views.clear()
+        def route_change(e):
+            page.views.clear()
 
-        if page.route == "/main":
-            page.views.append(ft.View("/views/login_view.py", [login_view(page)]))
-        elif page.route == "/signup":
-            page.views.append(ft.View("/signup", [signup_view(page)]))
+            if page.route == "/":
+                page.views.append(ft.View("/", [login_view(page)]))
+            elif page.route == "/signup":
+                page.views.append(ft.View("/signup", [signup_view(page)]))
 
-        page.update()
+            page.update()
 
-    page.on_route_change = route_change
-    page.go("/views/login_view.py")  # Ruta inicial
+        page.on_route_change = route_change
+        page.go("/")  # Ruta inicial
 
-ft.app(target=main)
+    ft.app(target=main)
 
-
+ft.app(target= login_view)

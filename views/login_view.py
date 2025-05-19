@@ -27,7 +27,7 @@ def login_view(page: ft.Page):
             status_text.value = message
             status_text.color = ft.Colors.GREEN
             page.update()
-            page.go(f"/{rol}")  # Redirigir según el rol
+            page.go(f"/{rol}")  #redirectingo to the appropiate screen
         else:
             status_text.value = message
             status_text.color = ft.Colors.RED
@@ -47,3 +47,4 @@ def login_view(page: ft.Page):
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         )
     )
+
