@@ -1,4 +1,5 @@
 import flet as ft
+from controllers.student_controller import StudentController
 
 def student_view(page: ft.Page):
     page.controls.clear()
@@ -34,6 +35,10 @@ def student_view(page: ft.Page):
         def reset_values():
             id_student_field.value = ''
             id_course_field = ''
+            
+        def event(e):
+            std = StudentController()
+            std.enter_to_course(id_course_field, id_course_field)
         
         alert = ft.BottomSheet(
             content= ft.Container(
@@ -46,7 +51,7 @@ def student_view(page: ft.Page):
                     controls= [
                         id_student_field,
                         id_course_field,
-                        ft.ElevatedButton(text= 'Inscribirme al curso', width= 300)
+                        ft.ElevatedButton(text= 'Inscribirme al curso', width= 300, on_click= event)
                     ]
                 )     
             ),

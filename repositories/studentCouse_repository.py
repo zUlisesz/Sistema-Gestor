@@ -1,5 +1,4 @@
 from .base import BaseRepository
-
 class StudentCourseRepository(BaseRepository):
     
     def register_student(self, student_id,course_id ):
