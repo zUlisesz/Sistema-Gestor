@@ -38,7 +38,8 @@ def student_view(page: ft.Page):
             
         def event(e):
             std = StudentController()
-            std.enter_to_course(id_course_field, id_course_field)
+            std.enter_to_course(int(id_course_field.value), int(id_course_field.value))
+            reset_values()
         
         alert = ft.BottomSheet(
             content= ft.Container(
