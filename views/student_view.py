@@ -9,7 +9,6 @@ def student_view(page: ft.Page):
     course_cards_column = ft.Row(controls=[], scroll=ft.ScrollMode.AUTO, spacing= 32 )
     course_cards_column2 = ft.Row(controls=[], scroll=ft.ScrollMode.AUTO, spacing= 32 )
 
-    
     top_bar = ft.Container(
         height=120,
         bgcolor="#2563eb",
@@ -28,6 +27,35 @@ def student_view(page: ft.Page):
 
     
     def inscribirme_a_curso(e):
+        id_student_field = ft.TextField(label= 'Id de estudiante', width= 300)
+        id_course_field = ft.TextField(label= 'Id del curso', width= 300)
+        
+        
+        def reset_values():
+            id_student_field.value = ''
+            id_course_field = ''
+        
+        alert = ft.BottomSheet(
+            content= ft.Container(
+                width= 500,
+                height= 260,
+                alignment= ft.alignment.center,
+                padding= 30,
+                content= ft.Column(
+                    spacing= 20,
+                    controls= [
+                        id_student_field,
+                        id_course_field,
+                        ft.ElevatedButton(text= 'Inscribirme al curso', width= 300)
+                    ]
+                )     
+            ),
+            dismissible= True,
+            on_dismiss= reset_values,
+            elevation= 10 
+        )
+        
+        page.open(alert)
         new_course_card = ft.Container(
             width=200,
             height=200,
@@ -41,10 +69,8 @@ def student_view(page: ft.Page):
         
         if len(course_cards_column.controls) <= 4 :    
             course_cards_column.controls.append(new_course_card)
-            print('added to row 1')
         elif len(course_cards_column2.controls) <= 4:
             course_cards_column2.controls.append(new_course_card)
-            print('added to row 2')
     
             
         page.update()
