@@ -1,7 +1,9 @@
 import flet as ft
 from controllers.student_controller import StudentController
 
+
 def student_view(page: ft.Page):
+    #from .login_view import student
     std = StudentController()
 
     course_cards_row1 = ft.Row(controls=[], spacing=32)
@@ -71,7 +73,7 @@ def student_view(page: ft.Page):
         bgcolor="#2563eb",
         content=ft.Row(
             [
-                ft.Text("Ulises Galdino Romero Romero", color=ft.Colors.WHITE, size=30, weight=ft.FontWeight.BOLD),
+                ft.Text('nombre del alumno', color=ft.Colors.WHITE, size=30, weight=ft.FontWeight.BOLD),
                 ft.Container(expand=True),
                 ft.IconButton(icon=ft.Icons.ACCOUNT_CIRCLE, icon_color=ft.Colors.WHITE, icon_size=60),
             ],

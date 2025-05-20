@@ -1,6 +1,7 @@
 from repositories.student_repository import StudentRepository
 from repositories.studentCouse_repository import StudentCourseRepository
 
+
 class StudentController:
 
     def __init__(self):
@@ -26,6 +27,10 @@ class StudentController:
     
     def get_student(self,mail):
         return self.student_repository.name_byMail(mail)
+    
+    def create_student(self,mail):
+        return self.student_repository.get_by_mail(mail)
+        
 
         
         

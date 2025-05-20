@@ -1,6 +1,5 @@
 from repositories.base import BaseRepository
 from repositories.user_repository import UserRepository
-from controllers.login_controller import LoginController
 from repositories.student_repository import StudentRepository
 from repositories.course_repository import CourseRepository
 from repositories.studentCouse_repository import StudentCourseRepository

@@ -1,11 +1,16 @@
 import flet as ft
 from controllers.login_controller import LoginController
+from controllers.student_controller import StudentController
 from views.signup_view import signup_view
 from views.student_view import student_view
+from models.student import Student
 
 log = LoginController()
+std = StudentController()
+student : Student
 
 def login_view(page: ft.Page):
+    
     email_field = ft.TextField(label="Correo electrónico", width=300)
     password_field = ft.TextField(label="Contraseña", password=True, can_reveal_password=True, width=300)
     status_text = ft.Text("", color=ft.Colors.RED_400)
@@ -24,7 +29,9 @@ def login_view(page: ft.Page):
         if success:
             status_text.value = message
             status_text.color = ft.Colors.GREEN
-            page.go(f"/{rol}")  # Redirige a la vista correspondiente según el rol
+            student = std.create_student(email)
+            page.go(f"/{rol}")
+            print('estudiante creado con éxito') 
         else:
             status_text.value = message
             status_text.color = ft.Colors.RED

@@ -52,6 +52,16 @@ class StudentRepository(BaseRepository):
         """
         row = self.get_one(query, (user_id,))
         return Student(*row) if row else None 
+    
+    def get_by_mail(self, mail) -> Student | None: #rhis method returns onely one row
+        query = """
+            SELECT u.id, u.name, u.mail,password, sd.career, sd.average
+            FROM users u
+            JOIN student_data sd ON u.id = sd.user_id
+            WHERE u.mail = %s
+        """
+        row = self.get_one(query, (mail,))
+        return Student(*row) if row else None 
 
     def get_all_students(self) -> list:
         query = """
