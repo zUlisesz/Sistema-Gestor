@@ -1,6 +1,5 @@
 from .base import BaseRepository
-from models.profesor import Teacher
-from models.student import Student
+from models.teacher import Teacher
 
 class UserRepository(BaseRepository):
 
@@ -34,8 +33,7 @@ class UserRepository(BaseRepository):
         rows = self.get_all(query, ('teacher',))
         return [Teacher(*row) for row in rows]
 
-    def get_by_mail(self, mail) -> Teacher:
-        query = "SELECT * FROM users WHERE mail = %s AND rol = %s"
+    def get_teacher_byMail(self, mail) -> Teacher:
+        query = "SELECT id,name, mail, password FROM users WHERE mail = %s AND rol = %s"
         row = self.get_one(query, (mail, 'teacher'))
         return Teacher(*row) if row else None
-
