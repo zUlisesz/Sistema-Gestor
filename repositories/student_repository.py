@@ -60,6 +60,7 @@ class StudentRepository(BaseRepository):
             JOIN student_data sd ON u.id = sd.user_id
             WHERE u.mail = %s
         """
+        
         row = self.get_one(query, (mail,))
         return Student(*row) if row else None 
 

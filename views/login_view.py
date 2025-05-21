@@ -28,8 +28,7 @@ def login_view(page: ft.Page):
         if success:
             status_text.value = message
             status_text.color = ft.Colors.GREEN
-            student = std.create_student(email)
-            print(type(student))
+            student: Student = std.create_student(email)
             page.data = {'my_student' : student}
             page.go(f"/{rol}") 
         else:

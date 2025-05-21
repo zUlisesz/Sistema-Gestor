@@ -55,5 +55,3 @@ def printStudents():
     all_students = repo.get_all_students()
     for s in all_students:
         print(f"id: {s.id } - {s.name} - {s.career} - {s.average}")
-
-main()
