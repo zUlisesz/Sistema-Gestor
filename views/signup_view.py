@@ -28,6 +28,15 @@ def signup_view(page: ft.Page):
 
     rol_field.on_change = on_rol_change
 
+    def reset_values():
+        name_field.value = ''
+        email_field.value = ''
+        password_field.value = ''
+        rol_field.value = None
+        career_field.value = ''
+        career_field.visible = False
+        
+        
     def on_submit(e):
         name = name_field.value
         email = email_field.value
@@ -38,6 +47,7 @@ def signup_view(page: ft.Page):
         success, message = controller.sign_up(name, email, password, rol, career)
         status_text.value = message
         status_text.color = ft.Colors.GREEN if success else ft.Colors.RED
+        reset_values()
         page.update()
 
     def go_back(e):

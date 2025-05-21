@@ -3,7 +3,6 @@ from controllers.student_controller import StudentController
 
 
 def student_view(page: ft.Page):
-    #from .login_view import student
     std = StudentController()
     student = page.data['my_student']
 
@@ -23,18 +22,15 @@ def student_view(page: ft.Page):
         )
 
     def inscribirme_a_curso(e):
-        id_student_field = ft.TextField(label='Id de estudiante', width=300)
         id_course_field = ft.TextField(label='Id del curso', width=300)
 
         def reset_values():
-            id_student_field.value = ''
             id_course_field.value = ''
 
         def event(e):
             try:
-                student_id = int(id_student_field.value)
                 course_id = int(id_course_field.value)
-                std.enter_to_course(student_id, course_id)
+                std.enter_to_course(student.id, course_id)
                 course_name = std.get_course(course_id)
                 new_course_card = create_course_card(course_name)
                 if len(course_cards_row1.controls) < 4:
@@ -50,13 +46,12 @@ def student_view(page: ft.Page):
         alert = ft.BottomSheet(
             content=ft.Container(
                 width=500,
-                height=260,
+                height=200,
                 alignment=ft.alignment.center,
                 padding=30,
                 content=ft.Column(
                     spacing=20,
                     controls=[
-                        id_student_field,
                         id_course_field,
                         ft.ElevatedButton(text='Inscribirme al curso', width=300, on_click=event)
                     ]
@@ -74,7 +69,7 @@ def student_view(page: ft.Page):
         bgcolor="#2563eb",
         content=ft.Row(
             [
-                ft.Text(student.name, color=ft.Colors.WHITE, size=30, weight=ft.FontWeight.BOLD),
+                ft.Text(f'{student.name} \t\t id de estudiante: {student.id}', color=ft.Colors.WHITE, size=30, weight=ft.FontWeight.BOLD),
                 ft.Container(expand=True),
                 ft.IconButton(icon=ft.Icons.ACCOUNT_CIRCLE, icon_color=ft.Colors.WHITE, icon_size=60),
             ],
