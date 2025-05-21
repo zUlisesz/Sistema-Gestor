@@ -20,6 +20,10 @@ def student_view(page: ft.Page):
             padding=10,
             margin=5,
         )
+        
+    def go_back(e):
+        page.data = {'my_user': None}
+        page.go("/")
 
     def inscribirme_a_curso(e):
         id_course_field = ft.TextField(label='Id del curso', width=300)
@@ -91,7 +95,7 @@ def student_view(page: ft.Page):
                 ft.ElevatedButton("Calificaciones", icon=ft.Icons.GRADING, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Inscribirme a un curso", icon=ft.Icons.SCHOOL, on_click=inscribirme_a_curso,
                                   style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Salir", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
+                ft.ElevatedButton("Salir", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click= go_back ),
             ],
             spacing=30
         )

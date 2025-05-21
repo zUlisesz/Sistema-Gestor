@@ -7,6 +7,10 @@ def teacher_view(page: ft.Page):
 
     class_cards_row1 = ft.Row(controls=[], spacing=32)
     class_cards_row2 = ft.Row(controls=[], spacing=32)
+    
+    def go_back(e):
+        page.data = {'my_user': None}
+        page.go("/")
 
     def create_class_card(class_name):
         return ft.Container(
@@ -86,7 +90,7 @@ def teacher_view(page: ft.Page):
                 ft.ElevatedButton("Tareas", icon=ft.Icons.TASK, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Agregar clase", icon=ft.Icons.ADD, on_click=agregar_clase,
                                   style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Salir", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
+                ft.ElevatedButton("Salir", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click= go_back),
             ],
             spacing=30
         )
