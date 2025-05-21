@@ -20,3 +20,12 @@ class StudentCourseRepository(BaseRepository):
         query = 'SELECT name from gestor.courses WHERE id = %s'
         row = self.get_one(query, (id,))
         return row[0]
+    
+    def get_my_courses(self, id):
+        query = '''SELECT c.name
+        FROM students_courses sc
+        JOIN courses c ON sc.course_id = c.id
+        WHERE sc.student_id = %s;
+        '''
+        rows = self.get_all(query, (id,))
+        return rows if rows else None
