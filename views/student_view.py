@@ -1,47 +1,42 @@
 import flet as ft
-from controllers.student_controller import StudentController
+from controllers.teacher_controller import TeacherController
 
+def teacher_view(page: ft.Page):
+    teacher = page.data['my_teacher']
+    tctrl = TeacherController()
 
-def student_view(page: ft.Page):
-    std = StudentController()
-    student = page.data['my_student']
+    class_cards_row1 = ft.Row(controls=[], spacing=32)
+    class_cards_row2 = ft.Row(controls=[], spacing=32)
 
-    course_cards_row1 = ft.Row(controls=[], spacing=32)
-    course_cards_row2 = ft.Row(controls=[], spacing=32)
-
-    def create_course_card(course_name):
+    def create_class_card(class_name):
         return ft.Container(
             width=200,
             height=200,
-            bgcolor="#e0e7ff",
+            bgcolor="#fef3c7",
             border_radius=10,
             alignment=ft.alignment.center,
-            content=ft.Text(course_name, size=16, weight=ft.FontWeight.BOLD),
+            content=ft.Text(class_name, size=16, weight=ft.FontWeight.BOLD),
             padding=10,
             margin=5,
         )
 
-    def inscribirme_a_curso(e):
-        id_course_field = ft.TextField(label='Id del curso', width=300)
+    def agregar_clase(e):
+        class_name_field = ft.TextField(label='Nombre de la clase', width=300)
 
         def reset_values():
-            id_course_field.value = ''
+            class_name_field.value = ''
 
         def event(e):
-            try:
-                course_id = int(id_course_field.value)
-                std.enter_to_course(student.id, course_id)
-                course_name = std.get_course(course_id)
-                new_course_card = create_course_card(course_name)
-                if len(course_cards_row1.controls) < 4:
-                    course_cards_row1.controls.append(new_course_card)
+            class_name = class_name_field.value.strip()
+            if class_name:
+                tctrl.create_class(teacher.id, class_name)
+                new_class_card = create_class_card(class_name)
+                if len(class_cards_row1.controls) < 4:
+                    class_cards_row1.controls.append(new_class_card)
                 else:
-                    course_cards_row2.controls.append(new_course_card)
+                    class_cards_row2.controls.append(new_class_card)
                 page.update()
                 page.close(alert)
-            except ValueError:
-                # Manejo de error si la conversión a int falla
-                pass
 
         alert = ft.BottomSheet(
             content=ft.Container(
@@ -52,8 +47,8 @@ def student_view(page: ft.Page):
                 content=ft.Column(
                     spacing=20,
                     controls=[
-                        id_course_field,
-                        ft.ElevatedButton(text='Inscribirme al curso', width=300, on_click=event)
+                        class_name_field,
+                        ft.ElevatedButton(text='Agregar clase', width=300, on_click=event)
                     ]
                 )
             ),
@@ -69,7 +64,7 @@ def student_view(page: ft.Page):
         bgcolor="#2563eb",
         content=ft.Row(
             [
-                ft.Text(f'{student.name} \t\t id de estudiante: {student.id}', color=ft.Colors.WHITE, size=30, weight=ft.FontWeight.BOLD),
+                ft.Text(f'{teacher.name} \t\t id de profesor: {teacher.id}', color=ft.Colors.WHITE, size=30, weight=ft.FontWeight.BOLD),
                 ft.Container(expand=True),
                 ft.IconButton(icon=ft.Icons.ACCOUNT_CIRCLE, icon_color=ft.Colors.WHITE, icon_size=60),
             ],
@@ -87,9 +82,9 @@ def student_view(page: ft.Page):
         content=ft.Column(
             controls=[
                 ft.ElevatedButton("Inicio", icon=ft.Icons.HOME, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
+                ft.ElevatedButton("Estudiantes", icon=ft.Icons.GROUP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Tareas", icon=ft.Icons.TASK, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Calificaciones", icon=ft.Icons.GRADING, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Inscribirme a un curso", icon=ft.Icons.SCHOOL, on_click=inscribirme_a_curso,
+                ft.ElevatedButton("Agregar clase", icon=ft.Icons.ADD, on_click=agregar_clase,
                                   style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Salir", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
             ],
@@ -107,9 +102,9 @@ def student_view(page: ft.Page):
                 padding=50,
                 content=ft.Column(
                     controls=[
-                        ft.Text("Tus cursos", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
-                        course_cards_row1,
-                        course_cards_row2
+                        ft.Text("Tus clases", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
+                        class_cards_row1,
+                        class_cards_row2
                     ],
                     spacing=25
                 )
@@ -119,7 +114,7 @@ def student_view(page: ft.Page):
     )
 
     return ft.View(
-        route="/student",
+        route="/teacher",
         controls=[
             ft.Column(
                 controls=[
