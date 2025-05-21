@@ -1,9 +1,11 @@
 from repositories.course_repository import CourseRepository
+from repositories.user_repository import UserRepository
 
 class AdminController:
     
     def __init__(self):
         self.rep_course = CourseRepository()
+        self.user_repo = UserRepository()
         
     def create_course(self, name, description, space, career ):
         query = 'INSERT INTO courses(name, description , space , carerr) VALUES (%s,%s,%s,%s)'
@@ -12,5 +14,10 @@ class AdminController:
     
     def add_teacher(self , teacher):
         pass
+    
+    def create_admin(self,mail):
+        return self.user_repo.get_admin_byMail(mail)
+    
+    
     
     

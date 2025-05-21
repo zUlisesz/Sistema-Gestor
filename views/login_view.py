@@ -2,15 +2,19 @@ import flet as ft
 from controllers.login_controller import LoginController
 from controllers.student_controller import StudentController
 from controllers.teacher_controller import TeacherController
-from views.signup_view import signup_view
-from views.student_view import student_view
-from views.teacher_view import teacher_view
+from controllers.admin_controller import AdminController
+from .signup_view import signup_view
+from .student_view import student_view
+from .teacher_view import teacher_view
+from .admin_view import admin_view
 from models.student import Student
 from models.teacher import Teacher
+from models.administrador import Admin
 
 log = LoginController()
 std = StudentController()
 teach = TeacherController()
+ad = AdminController()
 
 def login_view(page: ft.Page):
     
@@ -34,8 +38,10 @@ def login_view(page: ft.Page):
             status_text.color = ft.Colors.GREEN
             if rol == 'student':
                 user : Student = std.create_student(email)
-            else:
+            elif rol == 'teacher':
                 user : Teacher = teach.create_teacher(email)
+            elif rol == 'admin':
+                user :Admin = ad.create_admin(email)
             
             page.data = {'my_user' : user}
             page.go(f"/{rol}") 
@@ -77,6 +83,8 @@ def route_change(e: ft.RouteChangeEvent):
         page.views.append(student_view(page))
     elif page.route == '/teacher':
         page.views.append(teacher_view(page))
+    elif page.route == '/admin':
+        page.views.append(admin_view(page))
     else:
         page.views.append(
             ft.View(

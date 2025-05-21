@@ -1,5 +1,6 @@
 from .base import BaseRepository
 from models.teacher import Teacher
+from models.administrador import Admin
 
 class UserRepository(BaseRepository):
 
@@ -37,3 +38,8 @@ class UserRepository(BaseRepository):
         query = "SELECT id,name, mail, password FROM users WHERE mail = %s AND rol = %s"
         row = self.get_one(query, (mail, 'teacher'))
         return Teacher(*row) if row else None
+    
+    def get_admin_byMail(self, mail) -> Admin:
+        query = "SELECT id,name, mail, password FROM users WHERE mail = %s AND rol = %s"
+        row = self.get_one(query, (mail, 'admin'))
+        return Admin(*row) if row else None
