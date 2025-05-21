@@ -1,6 +1,6 @@
 from repositories.student_repository import StudentRepository
 from repositories.studentCouse_repository import StudentCourseRepository
-
+from models.student import Student
 
 class StudentController:
 
@@ -29,6 +29,7 @@ class StudentController:
         return self.student_repository.name_byMail(mail)
     
     def create_student(self,mail):
+
         return self.student_repository.get_by_mail(mail)
         
 

@@ -7,7 +7,6 @@ from models.student import Student
 
 log = LoginController()
 std = StudentController()
-student : Student
 
 def login_view(page: ft.Page):
     
@@ -30,8 +29,9 @@ def login_view(page: ft.Page):
             status_text.value = message
             status_text.color = ft.Colors.GREEN
             student = std.create_student(email)
-            page.go(f"/{rol}")
-            print('estudiante creado con éxito') 
+            print(type(student))
+            page.data = {'my_student' : student}
+            page.go(f"/{rol}") 
         else:
             status_text.value = message
             status_text.color = ft.Colors.RED
