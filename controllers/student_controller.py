@@ -31,6 +31,9 @@ class StudentController:
     def create_student(self,mail) -> Student:
         std: Student = self.student_repository.get_by_mail(mail)
         return std
+    
+    def get_courses_name(self,id):
+        return self.student_course.get_my_courses(id)
         
 
         

@@ -28,4 +28,4 @@ class StudentCourseRepository(BaseRepository):
         WHERE sc.student_id = %s;
         '''
         rows = self.get_all(query, (id,))
-        return rows if rows else None
+        return [row[0] for row in rows] if rows else None

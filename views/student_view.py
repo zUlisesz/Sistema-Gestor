@@ -8,6 +8,18 @@ def student_view(page: ft.Page):
 
     course_cards_row1 = ft.Row(controls=[], spacing=32)
     course_cards_row2 = ft.Row(controls=[], spacing=32)
+    
+    
+    def load_courses():
+        courses = std.get_courses_name(student.id)
+        for name_course in courses:
+            course_card = create_course_card(name_course)
+            if len(course_cards_row1.controls) < 4:
+                course_cards_row1.controls.append(course_card)
+            else:
+                course_cards_row2.controls.append(course_card)
+                
+        page.update()   
 
     def create_course_card(course_name):
         return ft.Container(
@@ -121,6 +133,8 @@ def student_view(page: ft.Page):
         ],
         expand=True
     )
+    
+    load_courses()
 
     return ft.View(
         route="/student",
