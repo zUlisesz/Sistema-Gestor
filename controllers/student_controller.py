@@ -34,6 +34,9 @@ class StudentController:
     
     def get_courses_name(self,id):
         return self.student_course.get_my_courses(id)
+    
+    def get_courses_id(self, id ):
+        return self.student_course.get_id_courses(id)
         
 
         

@@ -29,3 +29,14 @@ class StudentCourseRepository(BaseRepository):
         '''
         rows = self.get_all(query, (id,))
         return [row[0] for row in rows] if rows else None
+    
+    def get_id_courses(self, id):
+        query  = '''SELECT c.name
+        FROM students_courses sc
+        JOIN courses c ON sc.course_id = c.id
+        WHERE sc.student_id = %s;
+        '''
+        
+        rows = self.get_all(query, (id,))
+        return [row[0] for row in rows] if rows else None
+        

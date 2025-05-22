@@ -1,6 +1,6 @@
 import flet as ft
 from controllers.student_controller import StudentController
-
+from .course_view import course_view
 
 def student_view(page: ft.Page):
     std = StudentController()
@@ -9,23 +9,32 @@ def student_view(page: ft.Page):
     course_cards_row1 = ft.Row(controls=[], spacing=32)
     course_cards_row2 = ft.Row(controls=[], spacing=32)
     
+    def go_course(e):
+        course_view(page,e.control.data)
     
     def load_courses():
         courses = std.get_courses_name(student.id)
+        id_courses = std.get_courses_id(student.id)
+        i = 0 ; 
         for name_course in courses:
-            course_card = create_course_card(name_course)
+            course_card = create_course_card(name_course, id_courses[i])
             if len(course_cards_row1.controls) < 4:
                 course_cards_row1.controls.append(course_card)
             else:
                 course_cards_row2.controls.append(course_card)
                 
+            i = i + 1
+                
         page.update()   
 
-    def create_course_card(course_name):
+    def create_course_card(course_name,id):
         return ft.Container(
             width=200,
             height=200,
             bgcolor="#e0e7ff",
+            ink= True,
+            on_click=lambda e: page.go(f"/course/{id}"),
+            data = id,
             border_radius=10,
             alignment=ft.alignment.center,
             content=ft.Text(course_name, size=16, weight=ft.FontWeight.BOLD),

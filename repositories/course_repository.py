@@ -8,4 +8,9 @@ class CourseRepository(BaseRepository):
         rows = self.get_all(query,())
         return [Course(*row) for row in rows]
     
+    def get_course(self, id_course):
+        query = 'SELECT  * FROM gestor.courses WHERE id = %s'
+        row = self.get_all(query, (id_course,))
+        return row if row else None
+    
     

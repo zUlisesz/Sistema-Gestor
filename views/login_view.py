@@ -6,6 +6,7 @@ from controllers.admin_controller import AdminController
 from .signup_view import signup_view
 from .student_view import student_view
 from .teacher_view import teacher_view
+from .course_view import course_view
 from .admin_view import admin_view
 from models.student import Student
 from models.teacher import Teacher
@@ -85,7 +86,12 @@ def route_change(e: ft.RouteChangeEvent):
         page.views.append(teacher_view(page))
     elif page.route == '/admin':
         page.views.append(admin_view(page))
+    elif page.route.startswith("/course/"):
+        course_id = page.route.split("/course/")[1]
+        page.views.append(course_view(page, course_id))
+        
     else:
+        
         page.views.append(
             ft.View(
                 route=page.route,
