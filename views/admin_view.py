@@ -1,12 +1,53 @@
 import flet as ft
 from controllers.admin_controller import AdminController
+from controllers.course_controller import CourseController
 
 def admin_view(page: ft.Page):
     admin = page.data['my_user']
     actrl = AdminController()
+    cc = CourseController()
+    
+    course_cards_row1 = ft.Row(controls=[], spacing=32)
+    course_cards_row2 = ft.Row(controls=[], spacing=32)
 
     # Tarjetas de estadísticas
     stats_row = ft.Row(controls=[], spacing=32)
+    
+    
+    def load_courses():
+        
+        courses = cc.names()
+        id_courses = cc.ids()
+        
+        i = 0 ; 
+        for name_course in courses:
+            course_card = create_course_card(name_course, id_courses[i])
+            if len(course_cards_row1.controls) < 5:
+                course_cards_row1.controls.append(course_card)
+            else:
+                course_cards_row2.controls.append(course_card)
+                
+            i = i + 1
+            
+                
+        page.update()
+        
+    def create_course_card(course_name,id):
+        return ft.Container(
+            width=200,
+            height=200,
+            bgcolor="#e0e7ff",
+            ink= True,
+            on_click=lambda e: page.go(f"/course/{id}"),
+            data = id,
+            border_radius=10,
+            alignment=ft.alignment.center,
+            content=ft.Text(course_name, size=16, weight=ft.FontWeight.BOLD),
+            padding=10,
+            margin=5,
+        )
+        
+    load_courses()
 
     def create_stat_card(title, value, color):
         return ft.Container(
@@ -46,46 +87,50 @@ def admin_view(page: ft.Page):
         ])
         page.update()
 
-    def agregar_usuario(e):
+    def add_course(e):
         name_field = ft.TextField(label='Nombre', width=300)
-        email_field = ft.TextField(label='Correo electrónico', width=300)
-        role_dropdown = ft.Dropdown(
-            label='Rol',
+        description_field = ft.TextField(label='Descripción', width=300)
+        space_field = ft.TextField(label  = 'Cupo del curso', width= 300)
+        career_dropdown = ft.Dropdown(
+            label='Carrera',
             options=[
-                ft.dropdown.Option("Estudiante"),
-                ft.dropdown.Option("Profesor"),
-                ft.dropdown.Option("Administrador"),
+                ft.dropdown.Option("Ciencias de la computación"),
+                ft.dropdown.Option("Ciencia de datos"),
+                ft.dropdown.Option("Tecnologías de la información"),
             ],
             width=300
         )
 
         def reset_values():
             name_field.value = ''
-            email_field.value = ''
-            role_dropdown.value = None
+            description_field.value = ''
+            space_field.value = ''
+            career_dropdown.value = None
 
         def event(e):
             name = name_field.value.strip()
-            email = email_field.value.strip()
-            role = role_dropdown.value
-            if name and email and role:
-                actrl.create_user(name, email, role)
-                cargar_estadisticas()
+            description = description_field.value.strip()
+            space = space_field.value.strip()
+            career = career_dropdown.value
+            if name and description and space and career:
+                cc.make_course(name, description, int(space), career)
+                page.update()
                 page.close(alert)
 
         alert = ft.BottomSheet(
             content=ft.Container(
                 width=500,
-                height=300,
+                height=400,
                 alignment=ft.alignment.center,
                 padding=30,
                 content=ft.Column(
                     spacing=20,
                     controls=[
                         name_field,
-                        email_field,
-                        role_dropdown,
-                        ft.ElevatedButton(text='Agregar usuario', width=300, on_click=event)
+                        description_field,
+                        space_field, 
+                        career_dropdown,
+                        ft.ElevatedButton(text='Crear curso usuario',elevation= 10 , width=300, on_click=event)
                     ]
                 )
             ),
@@ -121,9 +166,9 @@ def admin_view(page: ft.Page):
                 ft.ElevatedButton("Inicio", icon=ft.Icons.HOME, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Usuarios", icon=ft.Icons.PEOPLE, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Cursos", icon=ft.Icons.BOOK, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Agregar usuario", icon=ft.Icons.PERSON_ADD, on_click=agregar_usuario,
+                ft.ElevatedButton("Agregar curso", icon=ft.Icons.PERSON_ADD, on_click= add_course,
                                   style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Salir", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click= go_back),
+                ft.ElevatedButton("Cerrar sesión", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click= go_back),
             ],
             spacing=30
         )
@@ -140,7 +185,9 @@ def admin_view(page: ft.Page):
                 content=ft.Column(
                     controls=[
                         ft.Text("Panel de administración", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
-                        stats_row
+                        stats_row,
+                        course_cards_row1,
+                        course_cards_row2
                     ],
                     spacing=25
                 )
@@ -150,6 +197,7 @@ def admin_view(page: ft.Page):
     )
 
     #cargar_estadisticas() debo completar este método
+
 
     return ft.View(
         route="/admin",

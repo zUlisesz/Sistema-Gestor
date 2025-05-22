@@ -59,8 +59,7 @@ class StudentRepository(BaseRepository):
             FROM users u
             JOIN student_data sd ON u.id = sd.user_id
             WHERE u.mail = %s
-        """
-        
+        """ 
         row = self.get_one(query, (mail,))
         return Student(*row) if row else None 
 
@@ -73,9 +72,7 @@ class StudentRepository(BaseRepository):
         rows = self.get_all(query)
         return [Student(*row) for row in rows]
     
-    
     def name_byMail(self, mail):
-        
         query = 'SELECT name FROM gestor.users WHERE mail = %s'
         row = self.get_one(query, (mail,))
         return row[0]

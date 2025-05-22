@@ -15,7 +15,7 @@ def student_view(page: ft.Page):
         i = 0 ; 
         for name_course in courses:
             course_card = create_course_card(name_course, id_courses[i])
-            if len(course_cards_row1.controls) < 4:
+            if len(course_cards_row1.controls) < 5:
                 course_cards_row1.controls.append(course_card)
             else:
                 course_cards_row2.controls.append(course_card)
