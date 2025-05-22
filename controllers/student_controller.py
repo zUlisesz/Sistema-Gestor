@@ -11,7 +11,10 @@ class StudentController:
     def enter_to_course(self, id_student, id_course):
         if self.check_info(id_student, id_course):
             if self.student_course.look_for_course(id_course) and self.student_course.look_for_student(id_student):
-                self.student_course.register_student(id_student, id_course)
+                try:
+                    self.student_course.register_student(id_student, id_course)
+                except:
+                    print('EL usuario ya ha sido agregado a este curso')
             else:
                 print('IDs no existentes')
         else:

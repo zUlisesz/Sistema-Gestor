@@ -13,14 +13,15 @@ def student_view(page: ft.Page):
         courses = std.get_courses_name(student.id)
         id_courses = std.get_courses_id(student.id)
         i = 0 ; 
-        for name_course in courses:
-            course_card = create_course_card(name_course, id_courses[i])
-            if len(course_cards_row1.controls) < 5:
-                course_cards_row1.controls.append(course_card)
-            else:
-                course_cards_row2.controls.append(course_card)
-                
-            i = i + 1
+        if courses:
+            for name_course in courses:
+                course_card = create_course_card(name_course, id_courses[i])
+                if len(course_cards_row1.controls) < 5:
+                    course_cards_row1.controls.append(course_card)
+                else:
+                    course_cards_row2.controls.append(course_card)
+                    
+                i = i + 1
                 
         page.update()   
 
@@ -42,24 +43,27 @@ def student_view(page: ft.Page):
     def go_back(e):
         page.data = {'my_user': None}
         page.go("/")
+        
+    def refresh(e):
+        page.update()
 
     def inscribirme_a_curso(e):
         id_course_field = ft.TextField(label='Id del curso', width=300)
 
-        def reset_values():
+        def reset_values(e):
             id_course_field.value = ''
+            page.close(alert)
 
         def event(e):
             try:
                 course_id = int(id_course_field.value)
                 std.enter_to_course(student.id, course_id)
                 course_name = std.get_course(course_id)
-                new_course_card = create_course_card(course_name)
+                new_course_card = create_course_card(course_name,course_id)
                 if len(course_cards_row1.controls) < 4:
                     course_cards_row1.controls.append(new_course_card)
                 else:
-                    course_cards_row2.controls.append(new_course_card)
-                page.update()
+                    course_cards_row2.controls.append(new_course_card,course_id)
                 page.close(alert)
             except ValueError:
                 # Manejo de error si la conversión a int falla
@@ -85,6 +89,7 @@ def student_view(page: ft.Page):
         )
 
         page.open(alert)
+        page.update()
 
     top_bar = ft.Container(
         height=120,
@@ -101,6 +106,7 @@ def student_view(page: ft.Page):
         ),
         padding=ft.padding.symmetric(horizontal=20),
     )
+    
 
     sidebar = ft.Container(
         width=200,
@@ -114,10 +120,13 @@ def student_view(page: ft.Page):
                 ft.ElevatedButton("Inscribirme a un curso", icon=ft.Icons.SCHOOL, on_click=inscribirme_a_curso,
                                   style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Salir", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click= go_back ),
+                ft.ElevatedButton("Actualizar Página", icon=ft.Icons.UPLOAD_FILE_SHARP, on_click=refresh)
             ],
             spacing=30
         )
     )
+    
+    
 
     content_layout = ft.Row(
         controls=[
