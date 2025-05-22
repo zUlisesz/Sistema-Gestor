@@ -41,8 +41,17 @@ def signup_view(page: ft.Page):
         name = name_field.value
         email = email_field.value
         password = password_field.value
+        career_dropdown = ft.Dropdown(
+            label='Carrera',
+            options=[
+                ft.dropdown.Option("Ciencias de la computación"),
+                ft.dropdown.Option("Ciencia de datos"),
+                ft.dropdown.Option("Tecnologías de la información"),
+            ],
+            width=300
+        )
         rol = rol_field.value
-        career = career_field.value if rol == "student" else None
+        career = career_dropdown.value
 
         success, message = controller.sign_up(name, email, password, rol, career)
         status_text.value = message
