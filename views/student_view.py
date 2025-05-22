@@ -8,10 +8,7 @@ def student_view(page: ft.Page):
 
     course_cards_row1 = ft.Row(controls=[], spacing=32)
     course_cards_row2 = ft.Row(controls=[], spacing=32)
-    
-    def go_course(e):
-        course_view(page,e.control.data)
-    
+
     def load_courses():
         courses = std.get_courses_name(student.id)
         id_courses = std.get_courses_id(student.id)
