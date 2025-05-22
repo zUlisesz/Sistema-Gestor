@@ -18,7 +18,7 @@ class StudentCourseRepository(BaseRepository):
     def course_name(self, id):
         query = 'SELECT name from gestor.courses WHERE id = %s'
         row = self.get_one(query, (id,))
-        return row[0]
+        return row[0] if row else None
     
     def get_my_courses(self, id):
         query = '''SELECT c.name
@@ -38,4 +38,10 @@ class StudentCourseRepository(BaseRepository):
         
         rows = self.get_all(query, (id,))
         return [row[0] for row in rows] if rows else None
+    
+    def is_already_in(self, student_id, course_id):
+        query = 'SELECT * FROM gestor.students_courses WHERE student_id = %s AND course_id = %s'
+        row = self.get_all(query, student_id, course_id)
+        return bool(row)
+        
         

@@ -53,9 +53,9 @@ def student_view(page: ft.Page):
             page.close(alert)
 
         def event(e):
-            try:
-                course_id = int(id_course_field.value)
-                std.enter_to_course(student.id, course_id)
+            course_id = int(id_course_field.value)
+            
+            if std.enter_to_course(student.id, course_id):
                 course_name = std.get_course(course_id)
                 new_course_card = create_course_card(course_name, course_id)
                 if len(course_cards_row1.controls) < 5:
@@ -69,14 +69,12 @@ def student_view(page: ft.Page):
                 status_text.visible = True
                 status_text.update()
                 page.update()
-
-            except :
+            else:
                 status_text.value = 'Id de curso inexistente o ya estás inscrito a este curso'
                 status_text.color = ft.Colors.RED_200
                 status_text.visible = True
                 status_text.update()
                 page.update()
-
 
         alert = ft.BottomSheet(
             content=ft.Container(
