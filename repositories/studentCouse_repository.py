@@ -41,7 +41,7 @@ class StudentCourseRepository(BaseRepository):
     
     def is_already_in(self, student_id, course_id):
         query = 'SELECT * FROM gestor.students_courses WHERE student_id = %s AND course_id = %s'
-        row = self.get_all(query, student_id, course_id)
+        row = self.get_all(query, (student_id, course_id))
         return bool(row)
         
         
