@@ -11,13 +11,14 @@ def student_view(page: ft.Page):
     def load_courses():
         courses = std.get_courses_name(student.id)
         id_courses = std.get_courses_id(student.id)
-        for i, name_course in enumerate(courses):
-            course_card = create_course_card(name_course, id_courses[i])
-            if len(course_cards_row1.controls) < 5:
-                course_cards_row1.controls.append(course_card)
-            else:
-                course_cards_row2.controls.append(course_card)
-        page.update()
+        if courses:
+            for i, name_course in enumerate(courses):
+                course_card = create_course_card(name_course, id_courses[i])
+                if len(course_cards_row1.controls) < 5:
+                    course_cards_row1.controls.append(course_card)
+                else:
+                    course_cards_row2.controls.append(course_card)
+                page.update()
 
     def create_course_card(course_name, id):
         return ft.Container(
@@ -69,7 +70,7 @@ def student_view(page: ft.Page):
                 status_text.update()
                 page.update()
 
-            except ValueError:
+            except :
                 status_text.value = 'Id de curso inexistente o ya estás inscrito a este curso'
                 status_text.color = ft.Colors.RED_200
                 status_text.visible = True
