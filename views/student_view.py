@@ -46,12 +46,16 @@ def student_view(page: ft.Page):
         
     def refresh(e):
         page.update()
+    
 
     def inscribirme_a_curso(e):
         id_course_field = ft.TextField(label='Id del curso', width=300)
-
+        status_text = ft.Text('', visible= False)
+        
         def reset_values(e):
             id_course_field.value = ''
+            status_text.value =  ''
+            status_text.visible = False
             page.close(alert)
 
         def event(e):
@@ -64,9 +68,17 @@ def student_view(page: ft.Page):
                     course_cards_row1.controls.append(new_course_card)
                 else:
                     course_cards_row2.controls.append(new_course_card,course_id)
-                page.close(alert)
+                    
+                id_course_field.value = ''
+                status_text.value = 'Inscripcción al curso completada correctamente'
+                status_text.color = ft.Colors.GREEN_200
+                status_text.visible = True
+                
+                
             except ValueError:
-                # Manejo de error si la conversión a int falla
+                status_text.value = 'Id de curso inexistente o ya estás inscrito a este curso'
+                status_text.color = ft.Colors.RED_200
+                status_text.visible = True
                 pass
 
         alert = ft.BottomSheet(
@@ -79,6 +91,7 @@ def student_view(page: ft.Page):
                     spacing=20,
                     controls=[
                         id_course_field,
+                        status_text,
                         ft.ElevatedButton(text='Inscribirme al curso', width=300, on_click=event)
                     ]
                 )
@@ -87,6 +100,7 @@ def student_view(page: ft.Page):
             on_dismiss=reset_values,
             elevation=10
         )
+        
 
         page.open(alert)
         page.update()
@@ -120,7 +134,8 @@ def student_view(page: ft.Page):
                 ft.ElevatedButton("Inscribirme a un curso", icon=ft.Icons.SCHOOL, on_click=inscribirme_a_curso,
                                   style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Salir", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click= go_back ),
-                ft.ElevatedButton("Actualizar Página", icon=ft.Icons.UPLOAD_FILE_SHARP, on_click=refresh)
+                ft.ElevatedButton("Actualizar Página", icon=ft.Icons.UPLOAD_FILE_SHARP, on_click=refresh,
+                                  style=ft.ButtonStyle(bgcolor="#1e40af", color="white"))
             ],
             spacing=30
         )
