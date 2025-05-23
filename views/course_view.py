@@ -22,6 +22,13 @@ def course_view(page: ft.Page, course_id):
         visible= False
     )
     
+    assign_teacher = ft.ElevatedButton(
+        'Asignar profesor', 
+        elevation= 10, 
+        visible= False,
+        on_click= lambda e : print(f'{dropdown_teachers.value} será ingresado al curso de {course.name}') 
+    ) 
+    
     def action(e):
         if isinstance(instance, Admin ):
             cc.delete_course(course_id)
@@ -30,19 +37,17 @@ def course_view(page: ft.Page, course_id):
             
         page.go(view)
     
-    button = ft.ElevatedButton('', on_click= action, elevation= 10, visible= False) 
+    button = ft.ElevatedButton('', on_click= action, elevation= 10) 
     
     if isinstance(instance, Admin ):
         view = '/admin'
         button.text =  'Eliminar curso'
         dropdown_teachers.visible = True
-        button.visible = True
+        assign_teacher.visible = True
     elif isinstance(instance, Student):
         view = '/student'
         button.text =  'Abandonar el curso'
        
-           
-        
     return ft.View(
         route=f"/course/{course_id}",
         controls=[
@@ -54,7 +59,7 @@ def course_view(page: ft.Page, course_id):
                 #controls= [ft.Text(student) for student in course['students']]
             #),
             dropdown_teachers,
-            ft.ElevatedButton('Asignar profesor', elevation= 10 ),
+            assign_teacher,
             button,
             ft.ElevatedButton("Volver", on_click=lambda e: page.go(view), elevation= 10 )
         ],
