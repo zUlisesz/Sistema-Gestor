@@ -21,6 +21,9 @@ class AdminController:
     def create_admin(self,mail):
         return self.user_repo.get_admin_byMail(mail)
     
+    def get_courses_teacher(self, course_id):
+        return self.rep_course.get_teacher_of_the_course(course_id)
+    
     
     
     

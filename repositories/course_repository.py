@@ -41,6 +41,17 @@ class CourseRepository(BaseRepository):
         query = '''INSERT INTO gestor.teachers_courses(teacher_id, course_id)
         VALUES(%s , %s)'''
         self.execute(query, (teacher_id, course_id))
+      
+        
+    def get_teacher_of_the_course(self, course_id):
+        query = '''SELECT u.name
+        FROM gestor.teachers_courses tc
+        JOIN gestor.users u ON tc.teacher_id = u.id
+        WHERE tc.course_id = %s;'''
+
+        row = self.get_one(query, (course_id,))
+        return row[0] if row else 'Sin maestr@ asignado'
+
         
     
     

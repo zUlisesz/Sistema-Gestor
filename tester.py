@@ -1,5 +1,6 @@
+from controllers.admin_controller import AdminController
 
-string = '19 - jaie alejandro romero sierra'
+adm = AdminController()
 
-id_teacher = string.partition(' -')
-print(int(id_teacher[0]))
+teacher_name = adm.get_courses_teacher(1)
+print(teacher_name)
