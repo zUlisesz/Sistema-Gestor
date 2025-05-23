@@ -39,9 +39,6 @@ def student_view(page: ft.Page):
         page.data = {'my_user': None}
         page.go("/")
 
-    def refresh(e):
-        page.update()
-
     def inscribirme_a_curso(e):
         id_course_field = ft.TextField(label='Id del curso', width=300)
         status_text = ft.Text('', visible=False)

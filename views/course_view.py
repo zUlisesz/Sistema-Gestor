@@ -24,6 +24,34 @@ def course_view(page: ft.Page, course_id):
         visible=False
     )
     
+    students_table = ft.DataTable(
+        heading_row_color="#1e40af",
+        horizontal_lines=ft.border.BorderSide(1, "#e5e7eb"),
+        vertical_lines=ft.border.BorderSide(1, "#e5e7eb"),
+        border_radius=8,
+        columns=[
+            ft.DataColumn(ft.Text("ID", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
+            ft.DataColumn(ft.Text("Nombre", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
+            ft.DataColumn(ft.Text("Correo", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
+            ft.DataColumn(ft.Text("Carrera", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD))
+        ],
+        rows=[]
+    )
+    
+    def fill_table():
+        users = cc.get_students_of(course_id)
+        for element in users:
+            new_row = ft.DataRow(
+                cells=[
+                    ft.DataCell(ft.Text(str(element[0]))),
+                    ft.DataCell(ft.Text(element[1])),
+                    ft.DataCell(ft.Text(element[2])),
+                    ft.DataCell(ft.Text(element[3])),
+                ]
+            )
+            students_table.rows.append(new_row)
+        page.update()
+        
     def add_teacher(e):
         pre_id = dropdown_teachers.value.partition(' - ')
         teacher_id = int(pre_id[0])
@@ -78,26 +106,94 @@ def course_view(page: ft.Page, course_id):
     else:
         view = '/teacher'
         action_button.visible = False
-        
+     
+    fill_table()   
     course_card = ft.Card(
         content=ft.Container(
             padding=20,
-            width= 800,
+            width= 1500,
             bgcolor="#2563eb",
             border_radius= 10 ,
-            content=ft.Column(
-                controls=[
-                    ft.Text(f"Curso: {course.name}", size=24, weight=ft.FontWeight.BOLD, color= ft.Colors.WHITE),
-                    ft.Text(f"Descripción: {course.description}", size=16, color= ft.Colors.WHITE),
-                    docente,
-                    #ft.Text("Estudiantes inscritos:", size=16, color= ft.Colors.WHITE),
+            content= ft.Row(
+                controls= [
+                    ft.Column(
+                        controls=[
+                            ft.Text(f"Curso: {course.name}", size=24, weight=ft.FontWeight.BOLD, color= ft.Colors.WHITE),
+                            ft.Text(f"Descripción: {course.description}", size=16, color= ft.Colors.WHITE),
+                            docente,
+                        ],
+                        spacing=10
+                    ),
+                    ft.Column(
+                        controls=[
+                            ft.ElevatedButton(
+                                text ="Volver", 
+                                icon=ft.Icons.EXIT_TO_APP, 
+                                style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
+                                on_click=  lambda e: page.go(view)
+                            ),
+                            ft.ElevatedButton(
+                                text ="Enviar aviso", 
+                                icon=ft.Icons.MESSAGE, 
+                                style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
+                                on_click=  lambda e: page.go(view)
+                            )
+                        ],
+                        spacing= 10 
+                    )
                 ],
-                spacing=10
+                spacing= 600
             )
         )
     )
     
-    #controles de los administradores
+    content_layout = ft.Container(
+                expand=True,
+                width = 1520 , 
+                bgcolor="#ffffff",
+                border_radius=ft.border_radius(top_right=20),
+                padding= 20,
+                content=ft.Row(
+                    controls=[
+                        ft.Container(
+                            content= ft.Column(
+                                controls= [
+                                    ft.Text("Estudiantes inscritos", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
+                                    ft.Container(
+                                        expand = True , 
+                                        content= students_table,
+                                        margin=ft.margin.only(top=10),
+                                        padding=10,
+                                        bgcolor="#f9fafb",
+                                        border_radius=8,
+                                        border=ft.border.all(1, "#e5e7eb")
+                                    )
+                                ],
+                                spacing= 25
+                            )
+                        ),
+                        ft.Container(
+                            content= ft.Column(
+                                controls=[
+                                    ft.Text("Estudiantes inscritos", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
+                                    ft.Container(
+                                        expand = True , 
+                                        content= ft.Text('Avisos de la clase: '),
+                                        margin=ft.margin.only(top=10),
+                                        padding=10,
+                                        bgcolor="#f9fafb",
+                                        border_radius=8,
+                                        border=ft.border.all(1, "#e5e7eb"),
+                                    )
+                                ]
+                            )
+                        )
+                    ],
+                    spacing=10
+                )
+            )
+    
+    
     admin_controls = ft.Column(
         controls=[
             dropdown_teachers,
@@ -109,8 +205,7 @@ def course_view(page: ft.Page, course_id):
     
     action_controls = ft.Row(
         controls=[
-            action_button,
-            ft.ElevatedButton("Volver", on_click=lambda e: page.go(view), elevation=10)
+            action_button
         ],
         spacing=10
     )
@@ -119,6 +214,7 @@ def course_view(page: ft.Page, course_id):
         route=f"/course/{course_id}",
         controls=[
             course_card,
+            content_layout,
             admin_controls,
             action_controls
         ],

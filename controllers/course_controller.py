@@ -19,3 +19,6 @@ class CourseController:
         
     def delete_course(self, id_course):
         self.repo.remove_course(id_course)
+        
+    def get_students_of(self, course_id):
+        return self.repo.get_belongers_to(course_id)

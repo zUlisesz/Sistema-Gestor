@@ -62,8 +62,13 @@ class CourseRepository(BaseRepository):
         return rows if rows else None
     
     
-
+    def get_belongers_to(self, course_id):
+        query = '''
+            SELECT u.id, u.name, u.mail, sd.career
+            FROM gestor.students_courses sc
+            JOIN gestor.users u ON sc.student_id = u.id
+            JOIN gestor.student_data sd ON u.id = sd.user_id
+            WHERE sc.course_id = %s; '''
+        rows = self.get_all(query, (course_id, ))
+        return rows if rows else None
         
-    
-    
-    
