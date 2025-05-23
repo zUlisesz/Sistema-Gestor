@@ -8,7 +8,13 @@ class TeacherController:
     def create_teacher(self, mail):
         return self.user_repo.get_teacher_byMail(mail)
     
-    def get_my_courses(self, teacher_id):
+    def get_my_courses_name(self, teacher_id):
+        return [row[0] for row in self.course_repo.get_courses_of(teacher_id)]
+    
+    def get_my_courses_id(self, teacher_id):
+        return [row[1] for row in self.course_repo.get_courses_of(teacher_id)]
+    
+    def get_my_info_courses(self, teacher_id):
         return self.course_repo.get_courses_of(teacher_id)
         
     

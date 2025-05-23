@@ -2,8 +2,9 @@ from controllers.teacher_controller import TeacherController
 
 tc = TeacherController()
 
-courses = tc.get_my_courses(19)
+names = tc.get_my_courses_name(19)
 
-for element in courses:
-    print(element)
+ids = tc.get_my_courses_id(19)
+
+print(tc.get_my_info_courses(19))
     

@@ -5,64 +5,42 @@ def teacher_view(page: ft.Page):
     teacher = page.data['my_user']
     tctrl = TeacherController()
 
-    class_cards_row1 = ft.Row(controls=[], spacing=32)
-    class_cards_row2 = ft.Row(controls=[], spacing=32)
+    course_cards_row1 = ft.Row(controls=[], spacing=32)
+    course_cards_row2 = ft.Row(controls=[], spacing=32)
     
     def go_back(e):
         page.data = {'my_user': None}
         page.go("/")
 
-    def create_class_card(class_name):
+    def load_courses():
+        data = tctrl.get_my_info_courses(teacher.id)
+        if data:
+            for element in data:
+                course_card = create_course_card(element[1], element[0])
+                if len(course_cards_row1.controls) < 5:
+                    course_cards_row1.controls.append(course_card)
+                else:
+                    course_cards_row2.controls.append(course_card)
+                page.update()
+                
+    def create_course_card(name, id):
         return ft.Container(
             width=200,
             height=200,
-            bgcolor="#fef3c7",
+            bgcolor="#e0e7ff",
+            ink=True,
+            on_click=lambda e: page.go(f"/course/{id}"),
+            data=id,
             border_radius=10,
             alignment=ft.alignment.center,
-            content=ft.Text(class_name, size=16, weight=ft.FontWeight.BOLD),
+            content=ft.Text(name, size=16, weight=ft.FontWeight.BOLD, color= ft.Colors.WHITE),
             padding=10,
             margin=5,
         )
 
-    def agregar_clase(e):
-        class_name_field = ft.TextField(label='Nombre de la clase', width=300)
 
-        def reset_values():
-            class_name_field.value = ''
-
-        def event(e):
-            class_name = class_name_field.value.strip()
-            if class_name:
-                tctrl.create_class(teacher.id, class_name)
-                new_class_card = create_class_card(class_name)
-                if len(class_cards_row1.controls) < 4:
-                    class_cards_row1.controls.append(new_class_card)
-                else:
-                    class_cards_row2.controls.append(new_class_card)
-                page.update()
-                page.close(alert)
-
-        alert = ft.BottomSheet(
-            content=ft.Container(
-                width=500,
-                height=200,
-                alignment=ft.alignment.center,
-                padding=30,
-                content=ft.Column(
-                    spacing=20,
-                    controls=[
-                        class_name_field,
-                        ft.ElevatedButton(text='Agregar clase', width=300, on_click=event)
-                    ]
-                )
-            ),
-            dismissible=True,
-            on_dismiss=reset_values,
-            elevation=10
-        )
-
-        page.open(alert)
-
+    load_courses()
+    
     top_bar = ft.Container(
         height=120,
         bgcolor="#2563eb",
@@ -88,8 +66,6 @@ def teacher_view(page: ft.Page):
                 ft.ElevatedButton("Inicio", icon=ft.Icons.HOME, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Estudiantes", icon=ft.Icons.GROUP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Tareas", icon=ft.Icons.TASK, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Agregar clase", icon=ft.Icons.ADD, on_click=agregar_clase,
-                                  style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Salir", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click= go_back),
             ],
             spacing=30
@@ -107,8 +83,8 @@ def teacher_view(page: ft.Page):
                 content=ft.Column(
                     controls=[
                         ft.Text("Tus clases", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
-                        class_cards_row1,
-                        class_cards_row2
+                        course_cards_row1,
+                        course_cards_row2
                     ],
                     spacing=25
                 )
