@@ -2,6 +2,7 @@ import flet as ft
 from controllers.course_controller import CourseController
 from controllers.student_controller import StudentController
 from controllers.admin_controller import AdminController
+from controllers.teacher_controller import TeacherController
 from models.administrador import Admin
 from models.student import Student
 
@@ -9,19 +10,12 @@ def course_view(page: ft.Page, course_id):
     std = StudentController()
     cc = CourseController()
     adm = AdminController()
+    tc = TeacherController()
     course = cc.create_course(course_id) 
 
     instance = page.data['my_user']
     
     docente = ft.Text(f"Docente: {adm.get_courses_teacher(course_id)}", size=16, color= ft.Colors.WHITE)
-    
-    send_notice = ft.ElevatedButton(
-        text ="Enviar aviso", 
-        icon=ft.Icons.MESSAGE, 
-        style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
-        on_click=  lambda e: page.go(view),
-        visible= False
-    )
 
     options = [ft.dropdown.Option(name) for name in adm.check_teachers()]
 
@@ -33,6 +27,8 @@ def course_view(page: ft.Page, course_id):
     )
     
     def post_notice(e):
+        
+        
         name_field = ft.TextField(label='título del aviso', width=400)
         description_field = ft.TextField(label='Contenido del aviso', width=400)
         
@@ -41,10 +37,17 @@ def course_view(page: ft.Page, course_id):
             description_field.value = ''
             
         
-        
+        def event(e):
+            name = name_field.value.strip()
+            description = description_field.value.strip()
+            if name and description :
+                tc.make_post(name , description, course_id)
+                page.update()
+                page.close(alert)
+                
         alert =  ft.BottomSheet(
             content=ft.Container(
-                width=500,
+                width=320,
                 height=400,
                 alignment=ft.alignment.center,
                 padding=30,
@@ -53,7 +56,7 @@ def course_view(page: ft.Page, course_id):
                     controls=[
                         name_field,
                         description_field,
-                        ft.ElevatedButton(text='Publicar aviso', elevation=10, width=300, on_click=event)
+                        ft.ElevatedButton(text='Publicar aviso', elevation=10, width=400, on_click=event)
                     ]
                 )
             ),
@@ -63,13 +66,19 @@ def course_view(page: ft.Page, course_id):
             
         )
         
-        def event(e):
-            name = name_field.value.strip()
-            description = description_field.value.strip()
-            if name and description :
-                cc.make_course(name, description, int(space), career)
-                page.update()
-                page.close(alert)
+        page.open(alert)
+        name_field.value = ''
+        description_field.value = ''
+        
+                
+    send_notice = ft.ElevatedButton(
+        text ="Enviar aviso", 
+        icon=ft.Icons.MESSAGE, 
+        style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
+        on_click=  post_notice,
+        visible= False
+    )
+                
     
     students_table = ft.DataTable(
         heading_row_color="#1e40af",
