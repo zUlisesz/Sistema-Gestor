@@ -1,8 +1,9 @@
-from controllers.admin_controller import AdminController
+from controllers.teacher_controller import TeacherController
 
-adm = AdminController()
+tc = TeacherController()
 
-members = adm.get_all()
+courses = tc.get_my_courses(19)
 
-for element in members:
+for element in courses:
     print(element)
+    

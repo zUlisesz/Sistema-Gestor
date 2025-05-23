@@ -51,6 +51,17 @@ class CourseRepository(BaseRepository):
 
         row = self.get_one(query, (course_id,))
         return row[0] if row else 'Docente no asignado'
+    
+    def get_courses_of(self, teacher_id):
+        query  = '''SELECT c.id , c.name
+        FROM gestor.teachers_courses tc
+        JOIN courses c ON tc.course_id = c.id
+        WHERE tc.teacher_id = %s;
+        '''
+        rows = self.get_all(query, (teacher_id,))
+        return rows if rows else None
+    
+    
 
         
     

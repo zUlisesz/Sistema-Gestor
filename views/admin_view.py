@@ -135,7 +135,7 @@ def admin_view(page: ft.Page):
     top_bar = ft.Container(
         height=140,
         bgcolor="#2563eb",
-        padding=ft.padding.symmetric(horizontal=20, vertical= 20),
+        padding=ft.padding.symmetric(horizontal=20, vertical= 20 ),
         content=ft.Column(
             controls=[
                 ft.Row(
@@ -150,9 +150,6 @@ def admin_view(page: ft.Page):
                 ),
                 ft.Row(
                     controls=[
-                        ft.ElevatedButton("Inicio", icon=ft.Icons.HOME, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                        ft.ElevatedButton("Usuarios", icon=ft.Icons.PEOPLE, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                        ft.ElevatedButton("Cursos", icon=ft.Icons.BOOK, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                         ft.ElevatedButton("Agregar curso", icon=ft.Icons.PERSON_ADD, on_click=add_course, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                         ft.ElevatedButton("Cerrar sesión", icon=ft.Icons.EXIT_TO_APP, on_click=go_back, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                     ],
