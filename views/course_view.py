@@ -14,6 +14,14 @@ def course_view(page: ft.Page, course_id):
     instance = page.data['my_user']
     
     docente = ft.Text(f"Docente: {adm.get_courses_teacher(course_id)}", size=16, color= ft.Colors.WHITE)
+    
+    send_notice = ft.ElevatedButton(
+        text ="Enviar aviso", 
+        icon=ft.Icons.MESSAGE, 
+        style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
+        on_click=  lambda e: page.go(view),
+        visible= False
+    )
 
     options = [ft.dropdown.Option(name) for name in adm.check_teachers()]
 
@@ -105,6 +113,7 @@ def course_view(page: ft.Page, course_id):
 
     else:
         view = '/teacher'
+        send_notice.visible = True
         action_button.visible = False
      
     fill_table()   
@@ -132,12 +141,7 @@ def course_view(page: ft.Page, course_id):
                                 style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
                                 on_click=  lambda e: page.go(view)
                             ),
-                            ft.ElevatedButton(
-                                text ="Enviar aviso", 
-                                icon=ft.Icons.MESSAGE, 
-                                style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
-                                on_click=  lambda e: page.go(view)
-                            )
+                            send_notice
                         ],
                         spacing= 10 
                     )
@@ -151,7 +155,7 @@ def course_view(page: ft.Page, course_id):
                 expand=True,
                 width = 1520 , 
                 bgcolor="#ffffff",
-                border_radius=ft.border_radius(top_right=20),
+                border_radius=ft.border_radius.only(top_left=20),
                 padding= 20,
                 content=ft.Row(
                     controls=[
@@ -175,7 +179,7 @@ def course_view(page: ft.Page, course_id):
                         ft.Container(
                             content= ft.Column(
                                 controls=[
-                                    ft.Text("Estudiantes inscritos", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
+                                    ft.Text("Avisos de la clase", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
                                     ft.Container(
                                         expand = True , 
                                         content= ft.Text('Avisos de la clase: '),
@@ -189,7 +193,7 @@ def course_view(page: ft.Page, course_id):
                             )
                         )
                     ],
-                    spacing=10
+                    spacing=100
                 )
             )
     
