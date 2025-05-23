@@ -21,6 +21,7 @@ def course_view(page: ft.Page, course_id):
         width=320,
         visible=False
     )
+    
 
     def add_teacher(e):
         pre_id = dropdown_teachers.value.partition(' - ')
@@ -73,8 +74,8 @@ def course_view(page: ft.Page, course_id):
                 controls=[
                     ft.Text(f"Curso: {course.name}", size=24, weight=ft.FontWeight.BOLD, color= ft.Colors.WHITE),
                     ft.Text(f"Descripción: {course.description}", size=16, color= ft.Colors.WHITE),
-                    ft.Text(f"Profesor: {adm.get_courses_teacher(course_id)}", size=16, color= ft.Colors.WHITE),
-                    ft.Text("Estudiantes inscritos:", size=16, color= ft.Colors.WHITE),
+                    ft.Text(f"Docente: {adm.get_courses_teacher(course_id)}", size=16, color= ft.Colors.WHITE),
+                    #ft.Text("Estudiantes inscritos:", size=16, color= ft.Colors.WHITE),
                     # Aquí puedes agregar una lista de estudiantes si está disponible
                 ],
                 spacing=10

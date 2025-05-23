@@ -10,36 +10,56 @@ def admin_view(page: ft.Page):
     course_cards_row1 = ft.Row(controls=[], spacing=32)
     course_cards_row2 = ft.Row(controls=[], spacing=32)
 
-    # Tarjetas de estadísticas
-    stats_row = ft.Row(controls=[], spacing=32)
+    user_table = ft.DataTable(
+        heading_row_color="#1e40af",
+        heading_row_min_height=40,
+        horizontal_lines=ft.border.BorderSide(1, "#e5e7eb"),
+        vertical_lines=ft.border.BorderSide(1, "#e5e7eb"),
+        border_radius=8,
+        columns=[
+            ft.DataColumn(ft.Text("ID", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
+            ft.DataColumn(ft.Text("Nombre", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
+            ft.DataColumn(ft.Text("Correo", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
+            ft.DataColumn(ft.Text("Rol", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
+        ],
+        rows=[]
+    )
     
-    
-    def load_courses():
+    def fill_table():
+        users = actrl.get_all()
+        for element in users:
+            new_row = ft.DataRow(
+                cells=[
+                    ft.DataCell(ft.Text(str(element[0]))),
+                    ft.DataCell(ft.Text(element[1])),
+                    ft.DataCell(ft.Text(element[2])),
+                    ft.DataCell(ft.Text(element[3])),
+                ]
+            )
+            user_table.rows.append(new_row)
+        page.update()
         
+    def load_courses():
         courses = cc.names()
         id_courses = cc.ids()
         
-        i = 0 ; 
-        for name_course in courses:
+        for i, name_course in enumerate(courses):
             course_card = create_course_card(name_course, id_courses[i])
             if len(course_cards_row1.controls) < 5:
                 course_cards_row1.controls.append(course_card)
             else:
                 course_cards_row2.controls.append(course_card)
                 
-            i = i + 1
-            
-                
         page.update()
         
-    def create_course_card(course_name,id):
+    def create_course_card(course_name, id):
         return ft.Container(
             width=200,
             height=200,
             bgcolor="#e0e7ff",
-            ink= True,
+            ink=True,
             on_click=lambda e: page.go(f"/course/{id}"),
-            data = id,
+            data=id,
             border_radius=10,
             alignment=ft.alignment.center,
             content=ft.Text(course_name, size=16, weight=ft.FontWeight.BOLD),
@@ -47,50 +67,17 @@ def admin_view(page: ft.Page):
             margin=5,
         )
         
+    fill_table()
     load_courses()
-
-    def create_stat_card(title, value, color):
-        return ft.Container(
-            width=200,
-            height=100,
-            bgcolor=color,
-            border_radius=10,
-            alignment=ft.alignment.center,
-            content=ft.Column(
-                controls=[
-                    ft.Text(title, size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
-                    ft.Text(str(value), size=24, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
-                ],
-                alignment=ft.MainAxisAlignment.CENTER,
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            ),
-            padding=10,
-            margin=5,
-        )
         
     def go_back(e):
         page.data = {'my_user': None}
         page.go('/')
 
-    def cargar_estadisticas():
-        total_users = actrl.get_total_users()
-        total_students = actrl.get_total_students()
-        total_teachers = actrl.get_total_teachers()
-        total_courses = actrl.get_total_courses()
-
-        stats_row.controls.clear()
-        stats_row.controls.extend([
-            create_stat_card("Usuarios", total_users, "#2563eb"),
-            create_stat_card("Estudiantes", total_students, "#1e40af"),
-            create_stat_card("Profesores", total_teachers, "#1e3a8a"),
-            create_stat_card("Cursos", total_courses, "#1e40af"),
-        ])
-        page.update()
-
     def add_course(e):
         name_field = ft.TextField(label='Nombre', width=300)
         description_field = ft.TextField(label='Descripción', width=300)
-        space_field = ft.TextField(label  = 'Cupo del curso', width= 300)
+        space_field = ft.TextField(label='Cupo del curso', width=300)
         career_dropdown = ft.Dropdown(
             label='Carrera',
             options=[
@@ -128,9 +115,9 @@ def admin_view(page: ft.Page):
                     controls=[
                         name_field,
                         description_field,
-                        space_field, 
+                        space_field,
                         career_dropdown,
-                        ft.ElevatedButton(text='Crear curso usuario',elevation= 10 , width=300, on_click=event)
+                        ft.ElevatedButton(text='Crear curso usuario', elevation=10, width=300, on_click=event)
                     ]
                 )
             ),
@@ -166,9 +153,9 @@ def admin_view(page: ft.Page):
                 ft.ElevatedButton("Inicio", icon=ft.Icons.HOME, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Usuarios", icon=ft.Icons.PEOPLE, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
                 ft.ElevatedButton("Cursos", icon=ft.Icons.BOOK, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Agregar curso", icon=ft.Icons.PERSON_ADD, on_click= add_course,
+                ft.ElevatedButton("Agregar curso", icon=ft.Icons.PERSON_ADD, on_click=add_course,
                                   style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Cerrar sesión", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click= go_back),
+                ft.ElevatedButton("Cerrar sesión", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click=go_back),
             ],
             spacing=30
         )
@@ -185,9 +172,16 @@ def admin_view(page: ft.Page):
                 content=ft.Column(
                     controls=[
                         ft.Text("Panel de administración", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
-                        stats_row,
                         course_cards_row1,
-                        course_cards_row2
+                        course_cards_row2,
+                        ft.Container(
+                            content=user_table,
+                            margin=ft.margin.only(top=30),
+                            padding=10,
+                            bgcolor="#f9fafb",
+                            border_radius=8,
+                            border=ft.border.all(1, "#e5e7eb"),
+                        )
                     ],
                     spacing=25
                 )
@@ -195,9 +189,6 @@ def admin_view(page: ft.Page):
         ],
         expand=True
     )
-
-    #cargar_estadisticas() debo completar este método
-
 
     return ft.View(
         route="/admin",

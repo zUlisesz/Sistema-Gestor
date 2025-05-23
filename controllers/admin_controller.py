@@ -24,6 +24,9 @@ class AdminController:
     def get_courses_teacher(self, course_id):
         return self.rep_course.get_teacher_of_the_course(course_id)
     
+    def get_all(self):
+        return self.user_repo.get_all_users()
+    
     
     
     

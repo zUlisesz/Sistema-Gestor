@@ -50,7 +50,7 @@ class CourseRepository(BaseRepository):
         WHERE tc.course_id = %s;'''
 
         row = self.get_one(query, (course_id,))
-        return row[0] if row else 'Sin maestr@ asignado'
+        return row[0] if row else 'Sin docente asignado aún'
 
         
     

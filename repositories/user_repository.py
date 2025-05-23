@@ -25,9 +25,9 @@ class UserRepository(BaseRepository):
         return row[0] if row else None
 
     def get_all_users(self):
-        query = "SELECT * FROM users"
-        rows = self.get_all(query)
-        return rows
+        query = "SELECT id, name, rol, mail FROM users"
+        rows = self.get_all(query,())
+        return rows if rows else None
 
     def get_teachers_names(self) -> list:
         query = "SELECT name,id  FROM users WHERE rol = %s"
