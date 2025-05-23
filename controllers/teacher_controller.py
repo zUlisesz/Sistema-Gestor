@@ -16,6 +16,9 @@ class TeacherController:
     
     def get_my_info_courses(self, teacher_id):
         return self.course_repo.get_courses_of(teacher_id)
+    
+    def make_post( self , name, content):
+        self.course_repo.insert_post(name, content)
         
     
     

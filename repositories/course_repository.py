@@ -71,4 +71,8 @@ class CourseRepository(BaseRepository):
             WHERE sc.course_id = %s; '''
         rows = self.get_all(query, (course_id, ))
         return rows if rows else None
+    
+    def insert_post(self,name, content, course_id):
+        query = 'INSERT INTO gestor.notices(name ,content, course_id) VALUES(%s , %s, %s)'
+        self.execute(query, (name , content, course_id))
         

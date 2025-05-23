@@ -32,6 +32,45 @@ def course_view(page: ft.Page, course_id):
         visible=False
     )
     
+    def post_notice(e):
+        name_field = ft.TextField(label='título del aviso', width=400)
+        description_field = ft.TextField(label='Contenido del aviso', width=400)
+        
+        def reset_values(e):
+            name_field.value = ''
+            description_field.value = ''
+            
+        
+        
+        alert =  ft.BottomSheet(
+            content=ft.Container(
+                width=500,
+                height=400,
+                alignment=ft.alignment.center,
+                padding=30,
+                content=ft.Column(
+                    spacing=20,
+                    controls=[
+                        name_field,
+                        description_field,
+                        ft.ElevatedButton(text='Publicar aviso', elevation=10, width=300, on_click=event)
+                    ]
+                )
+            ),
+            dismissible=True,
+            on_dismiss=reset_values,
+            elevation=10
+            
+        )
+        
+        def event(e):
+            name = name_field.value.strip()
+            description = description_field.value.strip()
+            if name and description :
+                cc.make_course(name, description, int(space), career)
+                page.update()
+                page.close(alert)
+    
     students_table = ft.DataTable(
         heading_row_color="#1e40af",
         horizontal_lines=ft.border.BorderSide(1, "#e5e7eb"),
