@@ -16,3 +16,6 @@ class CourseController:
     
     def make_course(self, name, description, space, career):
         self.repo.new_course(name ,description, space, career)
+        
+    def delete_course(self, id_course):
+        self.repo.remove_course(id_course)

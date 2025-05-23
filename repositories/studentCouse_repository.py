@@ -43,5 +43,10 @@ class StudentCourseRepository(BaseRepository):
         query = 'SELECT * FROM gestor.students_courses WHERE student_id = %s AND course_id = %s'
         row = self.get_all(query, (student_id, course_id))
         return bool(row)
+    
+    def remove_student(self, student_id, course_id):
+        query = '''DELETE from gestor.students_courses WHERE
+        student_id = %s AND id_course = %s'''
+        self.execute(query,(student_id, course_id))
         
         

@@ -32,5 +32,11 @@ class CourseRepository(BaseRepository):
         query = '''INSERT INTO gestor.courses(name, description, space, career)
         VALUES( %s, %s, %s, %s)'''
         self.execute(query,(name, description, space, career))
+        
+    def remove_course(self, id_course):
+        query = 'DELETE FROM gestor.course WHERE id = %s'
+        self.execute( query,(id_course))
+        
+    
     
     

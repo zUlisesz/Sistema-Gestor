@@ -39,6 +39,9 @@ class StudentController:
     
     def get_courses_id(self, id ):
         return self.student_course.get_id_courses(id)
+    
+    def leave_course(self, student_id , course_id):
+        self.student_course.remove_student(student_id ,course_id)
         
 
         

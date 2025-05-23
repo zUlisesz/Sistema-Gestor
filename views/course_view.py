@@ -1,17 +1,28 @@
 import flet as ft
 from controllers.course_controller import CourseController
+from controllers.student_controller import StudentController
 from models.administrador import Admin
 from models.student import Student
 
 def course_view(page: ft.Page, course_id):
+    std = StudentController()
     cc = CourseController()
     course = cc.create_course(course_id) 
     
     instance = page.data['my_user']
+    
     if isinstance(instance, Admin ):
         view = '/admin'
+        cadena = 'Eliminar curso'
     elif isinstance(instance, Student):
         view = '/student'
+        string = 'Abandonar el curso'
+        
+    def action(e):
+        if isinstance(instance, Admin ):
+            cc.delete_course(course_id)
+        elif isinstance(instance, Student):
+            std.leave_course(instance.name, course_id)
 
     return ft.View(
         route=f"/course/{course_id}",
@@ -23,6 +34,7 @@ def course_view(page: ft.Page, course_id):
             #ft.ListView(
                 #controls= [ft.Text(student) for student in course['students']]
             #),
+            ft.ElevatedButton(string, on_click= action),
             ft.ElevatedButton("Volver", on_click=lambda e: page.go(view))
         ],
         vertical_alignment=ft.MainAxisAlignment.START,
