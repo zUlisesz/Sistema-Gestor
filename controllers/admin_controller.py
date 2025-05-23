@@ -12,8 +12,8 @@ class AdminController:
         self.rep_course.execute(query,(name, description,space, career)) 
         print('New course created successfully')
     
-    def add_teacher(self):
-        pass
+    def assign_teacher(self, teacher_id, course_id):
+        self.rep_course.register_teacher(teacher_id, course_id)
        
     def check_teachers(self):
         return self.user_repo.get_teachers_names()

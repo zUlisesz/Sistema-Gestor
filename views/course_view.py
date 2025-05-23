@@ -21,13 +21,22 @@ def course_view(page: ft.Page, course_id):
         width= 320,
         visible= False
     )
+     
+    
+    def add_teacher(e):
+        pre_id = dropdown_teachers.value.partition(' - ')
+        teacher_id = int(pre_id[0])
+        adm.assign_teacher(
+            teacher_id= teacher_id,
+            course_id= course_id
+        )
     
     assign_teacher = ft.ElevatedButton(
         'Asignar profesor', 
         elevation= 10, 
         visible= False,
-        on_click= lambda e : print(f'{dropdown_teachers.value} será ingresado al curso de {course.name}') 
-    ) 
+        on_click= add_teacher 
+    )
     
     def action(e):
         if isinstance(instance, Admin ):

@@ -1,6 +1,5 @@
-from repositories.studentCouse_repository import StudentCourseRepository
 
-stdc = StudentCourseRepository()
+string = '19 - jaie alejandro romero sierra'
 
-names = stdc.get_my_courses(13)
-print(names)
+id_teacher = string.partition(' -')
+print(int(id_teacher[0]))

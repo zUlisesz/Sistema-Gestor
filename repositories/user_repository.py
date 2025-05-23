@@ -30,9 +30,9 @@ class UserRepository(BaseRepository):
         return rows
 
     def get_teachers_names(self) -> list:
-        query = "SELECT name FROM users WHERE rol = %s"
+        query = "SELECT name,id  FROM users WHERE rol = %s"
         rows = self.get_all(query, ('teacher',))
-        return [row[0] for row in rows]
+        return [ f'{row[1]} - {row[0]}' for row in rows]
 
     def get_teacher_byMail(self, mail) -> Teacher:
         query = "SELECT id,name, mail, password FROM users WHERE mail = %s AND rol = %s"
