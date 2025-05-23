@@ -33,7 +33,7 @@ def teacher_view(page: ft.Page):
             data=id,
             border_radius=10,
             alignment=ft.alignment.center,
-            content=ft.Text(name, size=16, weight=ft.FontWeight.BOLD, color= ft.Colors.WHITE),
+            content=ft.Text(name, size=16, weight=ft.FontWeight.BOLD),
             padding=10,
             margin=5,
         )

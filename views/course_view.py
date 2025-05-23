@@ -24,7 +24,6 @@ def course_view(page: ft.Page, course_id):
         visible=False
     )
     
-
     def add_teacher(e):
         pre_id = dropdown_teachers.value.partition(' - ')
         teacher_id = int(pre_id[0])
@@ -56,10 +55,11 @@ def course_view(page: ft.Page, course_id):
             cc.delete_course(course_id)
         elif isinstance(instance, Student):
             std.leave_course(instance.id, course_id)
+            
         page.go(view)
 
     action_button = ft.ElevatedButton(
-        text='',
+        text='press',
         on_click=action,
         elevation=10
     )
@@ -75,7 +75,10 @@ def course_view(page: ft.Page, course_id):
         view = '/student'
         action_button.text = 'Abandonar el curso'
 
-    # Crear la tarjeta del curso
+    else:
+        view = '/teacher'
+        action_button.visible = False
+        
     course_card = ft.Card(
         content=ft.Container(
             padding=20,
@@ -88,14 +91,13 @@ def course_view(page: ft.Page, course_id):
                     ft.Text(f"Descripción: {course.description}", size=16, color= ft.Colors.WHITE),
                     docente,
                     #ft.Text("Estudiantes inscritos:", size=16, color= ft.Colors.WHITE),
-                    # Aquí puedes agregar una lista de estudiantes si está disponible
                 ],
                 spacing=10
             )
         )
     )
-
-    # Controles adicionales (solo visibles para administradores)
+    
+    #controles de los administradores
     admin_controls = ft.Column(
         controls=[
             dropdown_teachers,
@@ -104,8 +106,7 @@ def course_view(page: ft.Page, course_id):
         spacing=10,
         visible=isinstance(instance, Admin)
     )
-
-    # Botones de acción
+    
     action_controls = ft.Row(
         controls=[
             action_button,
