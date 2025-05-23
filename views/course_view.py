@@ -12,6 +12,8 @@ def course_view(page: ft.Page, course_id):
     course = cc.create_course(course_id) 
 
     instance = page.data['my_user']
+    
+    docente = ft.Text(f"Docente: {adm.get_courses_teacher(course_id)}", size=16, color= ft.Colors.WHITE)
 
     options = [ft.dropdown.Option(name) for name in adm.check_teachers()]
 
@@ -30,8 +32,16 @@ def course_view(page: ft.Page, course_id):
             teacher_id=teacher_id,
             course_id=course_id
         )
-        page.snack_bar = ft.SnackBar(ft.Text("Profesor asignado correctamente"))
-        page.snack_bar.open = True
+        alert = ft.AlertDialog(
+            content= ft.Text(value = f'Docente: {adm.get_courses_teacher(course_id)} asignado al curso: {course.name}'),
+            on_dismiss = page.update()
+        )
+        
+        page.open(alert)
+        docente.value = f"Docente: {adm.get_courses_teacher(course_id)}"
+        dropdown_teachers.visible = False
+        assign_teacher.visible = False
+        
         page.update()
 
     assign_teacher = ft.ElevatedButton(
@@ -57,8 +67,10 @@ def course_view(page: ft.Page, course_id):
     if isinstance(instance, Admin):
         view = '/admin'
         action_button.text = 'Eliminar curso'
-        dropdown_teachers.visible = True
-        assign_teacher.visible = True
+        if 'Docente no asignado' in docente.value:
+            dropdown_teachers.visible = True
+            assign_teacher.visible = True
+
     elif isinstance(instance, Student):
         view = '/student'
         action_button.text = 'Abandonar el curso'
@@ -74,7 +86,7 @@ def course_view(page: ft.Page, course_id):
                 controls=[
                     ft.Text(f"Curso: {course.name}", size=24, weight=ft.FontWeight.BOLD, color= ft.Colors.WHITE),
                     ft.Text(f"Descripción: {course.description}", size=16, color= ft.Colors.WHITE),
-                    ft.Text(f"Docente: {adm.get_courses_teacher(course_id)}", size=16, color= ft.Colors.WHITE),
+                    docente,
                     #ft.Text("Estudiantes inscritos:", size=16, color= ft.Colors.WHITE),
                     # Aquí puedes agregar una lista de estudiantes si está disponible
                 ],

@@ -9,10 +9,10 @@ def admin_view(page: ft.Page):
     
     course_cards_row1 = ft.Row(controls=[], spacing=32)
     course_cards_row2 = ft.Row(controls=[], spacing=32)
+    course_cards_row3 = ft.Row(controls=[], spacing=32)
 
     user_table = ft.DataTable(
         heading_row_color="#1e40af",
-        heading_row_min_height=40,
         horizontal_lines=ft.border.BorderSide(1, "#e5e7eb"),
         vertical_lines=ft.border.BorderSide(1, "#e5e7eb"),
         border_radius=8,
@@ -21,6 +21,7 @@ def admin_view(page: ft.Page):
             ft.DataColumn(ft.Text("Nombre", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
             ft.DataColumn(ft.Text("Correo", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
             ft.DataColumn(ft.Text("Rol", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
+            ft.DataColumn(ft.Text("Contraseña", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD))
         ],
         rows=[]
     )
@@ -34,6 +35,7 @@ def admin_view(page: ft.Page):
                     ft.DataCell(ft.Text(element[1])),
                     ft.DataCell(ft.Text(element[2])),
                     ft.DataCell(ft.Text(element[3])),
+                    ft.DataCell(ft.Text(element[4]))
                 ]
             )
             user_table.rows.append(new_row)
@@ -45,10 +47,12 @@ def admin_view(page: ft.Page):
         
         for i, name_course in enumerate(courses):
             course_card = create_course_card(name_course, id_courses[i])
-            if len(course_cards_row1.controls) < 5:
+            if len(course_cards_row1.controls) < 6:
                 course_cards_row1.controls.append(course_card)
-            else:
+            elif len(course_cards_row1.controls) >= 6 and len(course_cards_row1.controls) < 13:
                 course_cards_row2.controls.append(course_card)
+            else:
+                course_cards_row3.controls.append(course_card)
                 
         page.update()
         
@@ -117,7 +121,7 @@ def admin_view(page: ft.Page):
                         description_field,
                         space_field,
                         career_dropdown,
-                        ft.ElevatedButton(text='Crear curso usuario', elevation=10, width=300, on_click=event)
+                        ft.ElevatedButton(text='Crear curso', elevation=10, width=300, on_click=event)
                     ]
                 )
             ),
@@ -125,58 +129,72 @@ def admin_view(page: ft.Page):
             on_dismiss=reset_values,
             elevation=10
         )
-
+        load_courses()
         page.open(alert)
 
     top_bar = ft.Container(
-        height=120,
+        height=140,
         bgcolor="#2563eb",
-        content=ft.Row(
-            [
-                ft.Text(f'{admin.name} \t\t id de administrador: {admin.id}', color=ft.Colors.WHITE, size=30, weight=ft.FontWeight.BOLD),
-                ft.Container(expand=True),
-                ft.IconButton(icon=ft.Icons.ACCOUNT_CIRCLE, icon_color=ft.Colors.WHITE, icon_size=60),
-            ],
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-            vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            expand=True,
-        ),
-        padding=ft.padding.symmetric(horizontal=20),
-    )
-
-    sidebar = ft.Container(
-        width=200,
-        bgcolor="#1e40af",
-        padding=20,
+        padding=ft.padding.symmetric(horizontal=20, vertical= 20),
         content=ft.Column(
             controls=[
-                ft.ElevatedButton("Inicio", icon=ft.Icons.HOME, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Usuarios", icon=ft.Icons.PEOPLE, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Cursos", icon=ft.Icons.BOOK, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Agregar curso", icon=ft.Icons.PERSON_ADD, on_click=add_course,
-                                  style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Cerrar sesión", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click=go_back),
+                ft.Row(
+                    controls=[
+                        ft.Text(f'{admin.name} \t\t id de administrador: {admin.id}', color=ft.Colors.WHITE, size=30, weight=ft.FontWeight.BOLD),
+                        ft.Container(expand=True),
+                        ft.IconButton(icon=ft.Icons.ACCOUNT_CIRCLE, icon_color=ft.Colors.WHITE, icon_size=60),
+                    ],
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    expand=True,
+                ),
+                ft.Row(
+                    controls=[
+                        ft.ElevatedButton("Inicio", icon=ft.Icons.HOME, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
+                        ft.ElevatedButton("Usuarios", icon=ft.Icons.PEOPLE, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
+                        ft.ElevatedButton("Cursos", icon=ft.Icons.BOOK, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
+                        ft.ElevatedButton("Agregar curso", icon=ft.Icons.PERSON_ADD, on_click=add_course, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
+                        ft.ElevatedButton("Cerrar sesión", icon=ft.Icons.EXIT_TO_APP, on_click=go_back, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
+                    ],
+                    alignment=ft.MainAxisAlignment.START,
+                    spacing=10,
+                )
             ],
-            spacing=30
+            spacing=10,
         )
     )
 
-    content_layout = ft.Row(
+    content_layout = ft.Column(
         controls=[
-            sidebar,
             ft.Container(
-                expand=True,
+                expand= True ,
+                width = 1520,
                 bgcolor="#ffffff",
                 border_radius=ft.border_radius.only(top_left=20),
-                padding=50,
+                padding=40 ,
                 content=ft.Column(
                     controls=[
-                        ft.Text("Panel de administración", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
+                        ft.Text("Cursos", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
                         course_cards_row1,
                         course_cards_row2,
+                        course_cards_row3
+                    ],
+                    spacing=25
+                )
+            ),
+            ft.Container(
+                expand=True,
+                width = 1520 , 
+                bgcolor="#ffffff",
+                border_radius=ft.border_radius.only(top_right=20),
+                padding=100,
+                content=ft.Column(
+                    controls=[
+                        ft.Text("Usuarios", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
                         ft.Container(
+                            expand = True , 
                             content=user_table,
-                            margin=ft.margin.only(top=30),
+                            margin=ft.margin.only(top=10),
                             padding=10,
                             bgcolor="#f9fafb",
                             border_radius=8,
@@ -201,6 +219,7 @@ def admin_view(page: ft.Page):
                 expand=True
             )
         ],
+        scroll=True,
         vertical_alignment=ft.MainAxisAlignment.START,
         horizontal_alignment=ft.MainAxisAlignment.START,
         bgcolor="#f3f4f6"
