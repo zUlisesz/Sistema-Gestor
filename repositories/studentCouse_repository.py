@@ -46,7 +46,7 @@ class StudentCourseRepository(BaseRepository):
     
     def remove_student(self, student_id, course_id):
         query = '''DELETE from gestor.students_courses WHERE
-        student_id = %s AND id_course = %s'''
+        student_id = %s AND course_id = %s'''
         self.execute(query,(student_id, course_id))
         
         

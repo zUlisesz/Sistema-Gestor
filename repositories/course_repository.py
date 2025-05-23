@@ -34,8 +34,8 @@ class CourseRepository(BaseRepository):
         self.execute(query,(name, description, space, career))
         
     def remove_course(self, id_course):
-        query = 'DELETE FROM gestor.course WHERE id = %s'
-        self.execute( query,(id_course))
+        query = 'DELETE FROM gestor.courses WHERE id = %s'
+        self.execute( query,(id_course,))
         
     
     

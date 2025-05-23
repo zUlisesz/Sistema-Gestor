@@ -13,7 +13,7 @@ def course_view(page: ft.Page, course_id):
     
     if isinstance(instance, Admin ):
         view = '/admin'
-        cadena = 'Eliminar curso'
+        string = 'Eliminar curso'
     elif isinstance(instance, Student):
         view = '/student'
         string = 'Abandonar el curso'
@@ -22,7 +22,9 @@ def course_view(page: ft.Page, course_id):
         if isinstance(instance, Admin ):
             cc.delete_course(course_id)
         elif isinstance(instance, Student):
-            std.leave_course(instance.name, course_id)
+            std.leave_course(instance.id, course_id)
+            
+        page.go(view)
 
     return ft.View(
         route=f"/course/{course_id}",
