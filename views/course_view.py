@@ -131,14 +131,14 @@ def course_view(page: ft.Page, course_id):
         
     def create_notice_card(name, content, date):
         return ft.Container(
-            width=300,
+            width=340,
             height=120,
             bgcolor="#e0e7ff",
             border_radius=10,
             alignment=ft.alignment.center,
             content=ft.Column(
                 controls=[
-                    ft.Text(f'{name} - {date}', size=16, weight=ft.FontWeight.BOLD),
+                    ft.Text(f'{name} | fecha: {date}', size=16, weight=ft.FontWeight.BOLD),
                     ft.Text(content, size=12, weight=ft.FontWeight.W_300),
                 ]
             ),
