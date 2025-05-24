@@ -7,6 +7,25 @@ def student_view(page: ft.Page):
 
     course_cards_row1 = ft.Row(controls=[], spacing=32)
     course_cards_row2 = ft.Row(controls=[], spacing=32)
+    
+    def show_available_courses(e):
+        rows = std.get_available_courses()
+        if not rows:
+            data = "No hay cursos disponibles en este momento."
+        else:
+            course_list = "\n".join(
+                [f"ID del curso: {row[0]} - Nombre del curso: {row[1]}" for row in rows]
+            )
+            data = f"\n\n{course_list}"
+
+        alert = ft.AlertDialog(
+            title=ft.Text("Cursos Disponibles"),
+            content=ft.Text(data),
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+        page.open(alert)
+        page.update()
+
 
     def load_courses():
         courses = std.get_courses_name(student.id)
@@ -118,10 +137,11 @@ def student_view(page: ft.Page):
         padding=20,
         content=ft.Column(
             controls=[
-                ft.ElevatedButton("Ver cursos disponibles", icon=ft.Icons.GRADING, style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
+                ft.ElevatedButton("Ver cursos disponibles", icon=ft.Icons.GRADING, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
+                                  on_click= show_available_courses),
                 ft.ElevatedButton("Inscribirme a un curso", icon=ft.Icons.SCHOOL, on_click=inscribirme_a_curso,
                                   style=ft.ButtonStyle(bgcolor="#1e40af", color="white")),
-                ft.ElevatedButton("Cerras sesión", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click=go_back)
+                ft.ElevatedButton("Cerrar sesión", icon=ft.Icons.EXIT_TO_APP, style=ft.ButtonStyle(bgcolor="#1e40af", color="white"), on_click=go_back)
             ],
             spacing=30
         )

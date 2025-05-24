@@ -83,4 +83,5 @@ class CourseRepository(BaseRepository):
         
         rows = self.get_all(query, (course_id,))
         return rows if rows else None
+    
         

@@ -49,4 +49,9 @@ class StudentCourseRepository(BaseRepository):
         student_id = %s AND course_id = %s'''
         self.execute(query,(student_id, course_id))
         
+    def id_name(self):
+        query = 'SELECT id, name FROM gestor.courses'
+        rows = self.get_all(query,())
+        return rows if rows else None
+        
         

@@ -43,6 +43,9 @@ class StudentController:
     def leave_course(self, student_id , course_id):
         self.student_course.remove_student(student_id ,course_id)
         
+    def get_available_courses(self):
+        return self.student_course.id_name()
+        
 
         
         
