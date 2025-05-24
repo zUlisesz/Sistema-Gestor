@@ -108,16 +108,17 @@ def course_view(page: ft.Page, course_id):
     def fill_table():
         users = cc.get_students_of(course_id)
         students_table.rows.clear()
-        for element in users:
-            new_row = ft.DataRow(
-                cells=[
-                    ft.DataCell(ft.Text(str(element[0]))),
-                    ft.DataCell(ft.Text(element[1])),
-                    ft.DataCell(ft.Text(element[2])),
-                    ft.DataCell(ft.Text(element[3])),
-                ]
-            )
-            students_table.rows.append(new_row)
+        if users:
+            for element in users:
+                new_row = ft.DataRow(
+                    cells=[
+                        ft.DataCell(ft.Text(str(element[0]))),
+                        ft.DataCell(ft.Text(element[1])),
+                        ft.DataCell(ft.Text(element[2])),
+                        ft.DataCell(ft.Text(element[3])),
+                    ]
+                )
+                students_table.rows.append(new_row)
         page.update()
         
     notices_container = ft.Column(

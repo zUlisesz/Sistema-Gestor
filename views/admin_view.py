@@ -49,7 +49,7 @@ def admin_view(page: ft.Page):
             course_card = create_course_card(name_course, id_courses[i])
             if len(course_cards_row1.controls) < 6:
                 course_cards_row1.controls.append(course_card)
-            elif len(course_cards_row1.controls) >= 6 and len(course_cards_row1.controls) < 13:
+            elif len(course_cards_row2.controls) <6:
                 course_cards_row2.controls.append(course_card)
             else:
                 course_cards_row3.controls.append(course_card)

@@ -24,7 +24,6 @@ class LoginController:
             return False, "Contraseña incorrecta"
 
     def login(self, mail, password):
-        """Devuelve (éxito, mensaje, rol)"""
         success, message = self.is_password_correct(mail, password)
         if success:
             rol = self.user_repository.get_rol(mail)
@@ -50,7 +49,6 @@ class LoginController:
         return True
 
     def sign_up(self, name, mail, password, rol, career=None):
-        """Devuelve (éxito, mensaje)"""
         if self.existing_user(mail):
             return False, "Usuario ya registrado."
 
