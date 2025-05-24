@@ -27,28 +27,27 @@ def course_view(page: ft.Page, course_id):
     )
     
     def post_notice(e):
-        
-        
-        name_field = ft.TextField(label='título del aviso', width=400)
+        name_field = ft.TextField(label='Título del aviso', width=400)
         description_field = ft.TextField(label='Contenido del aviso', width=400)
         
         def reset_values(e):
             name_field.value = ''
             description_field.value = ''
-            
         
         def event(e):
             name = name_field.value.strip()
             description = description_field.value.strip()
-            if name and description :
-                tc.make_post(name , description, course_id)
-                page.update()
+            if name and description:
+                tc.make_post(name, description, course_id)
                 page.close(alert)
+            
+            load_notices()
+            page.update()
                 
-        alert =  ft.BottomSheet(
+        alert = ft.BottomSheet(
             content=ft.Container(
-                width=320,
-                height=400,
+                width=400,
+                height=300,
                 alignment=ft.alignment.center,
                 padding=30,
                 content=ft.Column(
@@ -56,32 +55,44 @@ def course_view(page: ft.Page, course_id):
                     controls=[
                         name_field,
                         description_field,
-                        ft.ElevatedButton(text='Publicar aviso', elevation=10, width=400, on_click=event)
+                        ft.ElevatedButton(
+                            text='Publicar aviso',
+                            elevation=10,
+                            width=400,
+                            on_click=event,
+                            style=ft.ButtonStyle(
+                                bgcolor="#1e40af",
+                                color="white",
+                                shape=ft.RoundedRectangleBorder(radius=10)
+                            )
+                        )
                     ]
                 )
             ),
             dismissible=True,
             on_dismiss=reset_values,
             elevation=10
-            
         )
         
         page.open(alert)
         name_field.value = ''
         description_field.value = ''
         
-                
     send_notice = ft.ElevatedButton(
-        text ="Enviar aviso", 
+        text="Enviar aviso", 
         icon=ft.Icons.MESSAGE, 
-        style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
-        on_click=  post_notice,
-        visible= False
+        style=ft.ButtonStyle(
+            bgcolor="#1e40af",
+            color="white",
+            shape=ft.RoundedRectangleBorder(radius=10)
+        ),
+        on_click=post_notice,
+        visible=False
     )
                 
-    
     students_table = ft.DataTable(
         heading_row_color="#1e40af",
+        heading_row_height=40,
         horizontal_lines=ft.border.BorderSide(1, "#e5e7eb"),
         vertical_lines=ft.border.BorderSide(1, "#e5e7eb"),
         border_radius=8,
@@ -96,6 +107,7 @@ def course_view(page: ft.Page, course_id):
     
     def fill_table():
         users = cc.get_students_of(course_id)
+        students_table.rows.clear()
         for element in users:
             new_row = ft.DataRow(
                 cells=[
@@ -108,6 +120,36 @@ def course_view(page: ft.Page, course_id):
             students_table.rows.append(new_row)
         page.update()
         
+    notices_container = ft.Column(
+        controls=[],
+        scroll=ft.ScrollMode.AUTO
+    )
+        
+    def create_notice_card(name, content, date):
+        return ft.Container(
+            width=200,
+            height=120,
+            bgcolor="#e0e7ff",
+            border_radius=10,
+            alignment=ft.alignment.center,
+            content=ft.Column(
+                controls=[
+                    ft.Text(f'{name} - {date}', size=16, weight=ft.FontWeight.BOLD),
+                    ft.Text(content, size=12, weight=ft.FontWeight.W_300),
+                ]
+            ),
+            padding=10,
+            margin=5,
+        )
+        
+    def load_notices():
+        data = cc.get_post(course_id)
+        notices_container.controls.clear()
+        if data:
+            for element in data:
+                notices_container.controls.append(create_notice_card(element[0], element[2], element[1]))
+        page.update()
+        
     def add_teacher(e):
         pre_id = dropdown_teachers.value.partition(' - ')
         teacher_id = int(pre_id[0])
@@ -116,8 +158,8 @@ def course_view(page: ft.Page, course_id):
             course_id=course_id
         )
         alert = ft.AlertDialog(
-            content= ft.Text(value = f'Docente: {adm.get_courses_teacher(course_id)} asignado al curso: {course.name}'),
-            on_dismiss = page.update()
+            content=ft.Text(value=f'Docente: {adm.get_courses_teacher(course_id)} asignado al curso: {course.name}'),
+            on_dismiss=lambda e: page.update()
         )
         
         page.open(alert)
@@ -131,7 +173,12 @@ def course_view(page: ft.Page, course_id):
         text='Asignar profesor',
         elevation=10,
         visible=False,
-        on_click=add_teacher
+        on_click=add_teacher,
+        style=ft.ButtonStyle(
+            bgcolor="#1e40af",
+            color="white",
+            shape=ft.RoundedRectangleBorder(radius=10)
+        )
     )
 
     def action(e):
@@ -139,13 +186,17 @@ def course_view(page: ft.Page, course_id):
             cc.delete_course(course_id)
         elif isinstance(instance, Student):
             std.leave_course(instance.id, course_id)
-            
         page.go(view)
 
     action_button = ft.ElevatedButton(
         text='press',
         on_click=action,
-        elevation=10
+        elevation=10,
+        style=ft.ButtonStyle(
+            bgcolor="#dc2626",
+            color="white",
+            shape=ft.RoundedRectangleBorder(radius=10)
+        )
     )
 
     if isinstance(instance, Admin):
@@ -154,29 +205,29 @@ def course_view(page: ft.Page, course_id):
         if 'Docente no asignado' in docente.value:
             dropdown_teachers.visible = True
             assign_teacher.visible = True
-
     elif isinstance(instance, Student):
         view = '/student'
         action_button.text = 'Abandonar el curso'
-
     else:
         view = '/teacher'
         send_notice.visible = True
         action_button.visible = False
-     
+
+    load_notices()
     fill_table()   
+
     course_card = ft.Card(
         content=ft.Container(
             padding=20,
-            width= 1500,
+            expand=True,
             bgcolor="#2563eb",
-            border_radius= 10 ,
-            content= ft.Row(
-                controls= [
+            border_radius=10,
+            content=ft.Row(
+                controls=[
                     ft.Column(
                         controls=[
-                            ft.Text(f"Curso: {course.name}", size=24, weight=ft.FontWeight.BOLD, color= ft.Colors.WHITE),
-                            ft.Text(f"Descripción: {course.description}", size=16, color= ft.Colors.WHITE),
+                            ft.Text(f"Curso: {course.name}", size=24, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
+                            ft.Text(f"Descripción: {course.description}", size=16, color=ft.Colors.WHITE),
                             docente,
                         ],
                         spacing=10
@@ -184,81 +235,86 @@ def course_view(page: ft.Page, course_id):
                     ft.Column(
                         controls=[
                             ft.ElevatedButton(
-                                text ="Volver", 
-                                icon=ft.Icons.EXIT_TO_APP, 
-                                style=ft.ButtonStyle(bgcolor="#1e40af", color="white"),
-                                on_click=  lambda e: page.go(view)
+                                text="Volver",
+                                icon=ft.Icons.EXIT_TO_APP,
+                                on_click=lambda e: page.go(view),
+                                style=ft.ButtonStyle(
+                                    bgcolor="#1e40af",
+                                    color="white",
+                                    shape=ft.RoundedRectangleBorder(radius=10)
+                                )
                             ),
                             send_notice
                         ],
-                        spacing= 10 
+                        spacing=10
                     )
                 ],
-                spacing= 600
+                spacing=100
             )
         )
     )
     
     content_layout = ft.Container(
-                expand=True,
-                width = 1520 , 
-                bgcolor="#ffffff",
-                border_radius=ft.border_radius.only(top_left=20),
-                padding= 20,
-                content=ft.Row(
-                    controls=[
-                        ft.Container(
-                            content= ft.Column(
-                                controls= [
-                                    ft.Text("Estudiantes inscritos", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
-                                    ft.Container(
-                                        expand = True , 
-                                        content= students_table,
-                                        margin=ft.margin.only(top=10),
-                                        padding=10,
-                                        bgcolor="#f9fafb",
-                                        border_radius=8,
-                                        border=ft.border.all(1, "#e5e7eb")
-                                    )
-                                ],
-                                spacing= 25
+        expand=True,
+        bgcolor="#ffffff",
+        border_radius=ft.border_radius.only(top_left=20),
+        padding=20,
+        content=ft.Row(
+            controls=[
+                ft.Container(
+                    expand=2,
+                    content=ft.Column(
+                        controls=[
+                            ft.Text("Estudiantes inscritos", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
+                            ft.Container(
+                                expand=True,
+                                content=students_table,
+                                margin=ft.margin.only(top=10),
+                                padding=10,
+                                bgcolor="#f9fafb",
+                                border_radius=8,
+                                border=ft.border.all(1, "#e5e7eb")
                             )
-                        ),
-                        ft.Container(
-                            content= ft.Column(
-                                controls=[
-                                    ft.Text("Avisos de la clase", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
-                                    ft.Container(
-                                        expand = True , 
-                                        content= ft.Text('Avisos de la clase: '),
-                                        margin=ft.margin.only(top=10),
-                                        padding=10,
-                                        bgcolor="#f9fafb",
-                                        border_radius=8,
-                                        border=ft.border.all(1, "#e5e7eb"),
-                                    )
-                                ]
+                        ],
+                        spacing=25
+                    )
+                ),
+                ft.Container(
+                    expand=1,
+                    content=ft.Column(
+                        controls=[
+                            ft.Text("Avisos de la clase", size=20, color="#1f2937", weight=ft.FontWeight.BOLD),
+                            ft.Container(
+                                expand=True,
+                                content=notices_container,
+                                margin=ft.margin.only(top=10),
+                                padding=10,
+                                bgcolor="#f9fafb",
+                                border_radius=8,
+                                border=ft.border.all(1, "#e5e7eb")
                             )
-                        )
-                    ],
-                    spacing=100
+                        ]
+                    )
                 )
+            ],
+            spacing=40
+        )
+    )
+    
+    admin_controls = ft.Card(
+        elevation=2,
+        content=ft.Container(
+            padding=10,
+            content=ft.Column(
+                controls=[dropdown_teachers, assign_teacher],
+                spacing=10
             )
-    
-    
-    admin_controls = ft.Column(
-        controls=[
-            dropdown_teachers,
-            assign_teacher
-        ],
-        spacing=10,
+        ),
         visible=isinstance(instance, Admin)
     )
     
     action_controls = ft.Row(
-        controls=[
-            action_button
-        ],
+        controls=[action_button],
         spacing=10
     )
 

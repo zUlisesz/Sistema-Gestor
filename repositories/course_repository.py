@@ -1,5 +1,6 @@
 from .base import BaseRepository
 from models.course import Course
+from datetime import date
 
 class CourseRepository(BaseRepository):
     
@@ -73,6 +74,13 @@ class CourseRepository(BaseRepository):
         return rows if rows else None
     
     def insert_post(self,name, content, course_id):
-        query = 'INSERT INTO gestor.notices(name ,content, course_id) VALUES(%s , %s, %s)'
-        self.execute(query, (name , content, course_id))
+        query = 'INSERT INTO gestor.notices(name ,content, course_id, date) VALUES(%s , %s, %s, %s)'
+        self.execute(query, (name , content, course_id, date.today()))
+        
+    def get_notices(self, course_id):
+        query = '''SELECT name, date,content 
+        FROM gestor.notices WHERE course_id = %s'''
+        
+        rows = self.get_all(query, (course_id,))
+        return rows if rows else None
         

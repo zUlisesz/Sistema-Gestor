@@ -22,3 +22,7 @@ class CourseController:
         
     def get_students_of(self, course_id):
         return self.repo.get_belongers_to(course_id)
+    
+    def get_post(self, course_id):
+        return self.repo.get_notices(course_id)
+        
