@@ -1,3 +1,4 @@
+#Esta clase heréda de la clase Base y son reutilizados sus métodos para poder hacer consultas a la bd
 from .base import BaseRepository
 from models.student import Student
 
@@ -43,7 +44,7 @@ class StudentRepository(BaseRepository):
         rows = self.get_all(query)
         return [Student(*row) for row in rows]
 
-    def get_by_id(self, user_id) -> Student | None: #rhis method returns onely one row
+    def get_by_id(self, user_id) -> Student | None: #métodos con  [row = self.get_one(query, (user_id,))] regresan un solo elemento
         query = """
             SELECT u.id, u.name, u.mail,password, sd.career, sd.average
             FROM users u
@@ -53,7 +54,7 @@ class StudentRepository(BaseRepository):
         row = self.get_one(query, (user_id,))
         return Student(*row) if row else None 
     
-    def get_by_mail(self, mail) -> Student | None: #rhis method returns onely one row
+    def get_by_mail(self, mail) -> Student | None: #métodos con [row = self.get_one(query, (mail,))] regresan listas
         query = """
             SELECT u.id, u.name, u.mail,password, sd.career, sd.average
             FROM users u

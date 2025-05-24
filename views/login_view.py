@@ -1,3 +1,5 @@
+#vista principal del programa, es el login
+#se importan los arcivos de el modulo de controladores y las demás vistas
 import flet as ft
 from controllers.login_controller import LoginController
 from controllers.student_controller import StudentController
@@ -12,6 +14,7 @@ from models.student import Student
 from models.teacher import Teacher
 from models.administrador import Admin
 
+#objetos de controladores para poder comunicarse con los modelos y los repositorios
 log = LoginController()
 std = StudentController()
 teach = TeacherController()
@@ -51,6 +54,7 @@ def login_view(page: ft.Page):
             status_text.color = ft.Colors.RED
         page.update()
 
+    #regresa la vista asignando un nombre de ruta a la vista
     return ft.View(
         route="/",
         controls=[
@@ -72,6 +76,7 @@ def login_view(page: ft.Page):
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
     )
 
+#este método sirve como direccinador de vistas para saber a donde moverse
 def route_change(e: ft.RouteChangeEvent):
     page = e.page
     page.views.clear()

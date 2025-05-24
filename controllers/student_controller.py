@@ -1,3 +1,7 @@
+#dentro de las clases controladoras se comunican las vistas con los repositorios
+#los controladores recibe datos de las vitas , algunas hacen operaciones
+#además estos controladores logran usan las clases de repositorios para mostrar info a través de las vistas
+#en general estos constructores son mediadores entre las vistas y los modelos y repositorios
 from repositories.student_repository import StudentRepository
 from repositories.studentCouse_repository import StudentCourseRepository
 from models.student import Student

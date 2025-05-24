@@ -1,3 +1,0 @@
-
-from repositories.studentCouse_repository import StudentCourseRepository
-

@@ -1,3 +1,8 @@
+#vista para el registro de usuarios que aún no cuentan con una cuenta
+#se implementa los mismos patrones en todas las vistas
+#se crean los elementos de la vista
+#se usan eventos que a su vez usan a los controladores importados
+#y se regresa la vista con un nombre de ruta
 import flet as ft
 from controllers.login_controller import LoginController
 
@@ -78,6 +83,6 @@ def signup_view(page: ft.Page):
             ),
             status_text,
         ],
-        alignment=ft.MainAxisAlignment.START,
+        alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
     )

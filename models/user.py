@@ -1,3 +1,5 @@
+#esta es una clase padre para todos los típos de usuarios
+#en general estas clase únicamente sirven para almacenar información de un usuario traido desde la bd y poder manipular la información entre vistas
 class User:
     def __init__(self, id, name, mail, password ):
         self.id = id

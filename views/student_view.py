@@ -1,3 +1,9 @@
+
+#vista para los estudantes 
+#se implementa los mismos patrones en todas las vistas
+#se crean los elementos de la vista
+#se usan eventos que a su vez usan a los controladores importados
+#y se regresa la vista con un nombre de ruta 
 import flet as ft
 from controllers.student_controller import StudentController
 

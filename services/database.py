@@ -1,3 +1,4 @@
+#dentro de este código se hace la conexión con la base de datos
 import mysql.connector
 
 def connect_db():

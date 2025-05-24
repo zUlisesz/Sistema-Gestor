@@ -1,3 +1,4 @@
+#Esta clase heréda de la clase Base y son reutilizados sus métodos para poder hacer consultas a la bd
 from .base import BaseRepository
 from models.course import Course
 from datetime import date
