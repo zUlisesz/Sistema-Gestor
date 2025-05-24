@@ -33,6 +33,8 @@ def course_view(page: ft.Page, course_id):
         def reset_values(e):
             name_field.value = ''
             description_field.value = ''
+            load_notices()
+            page.update()
         
         def event(e):
             name = name_field.value.strip()
@@ -123,12 +125,13 @@ def course_view(page: ft.Page, course_id):
         
     notices_container = ft.Column(
         controls=[],
+        width= 400,
         scroll=ft.ScrollMode.AUTO
     )
         
     def create_notice_card(name, content, date):
         return ft.Container(
-            width=200,
+            width=300,
             height=120,
             bgcolor="#e0e7ff",
             border_radius=10,
