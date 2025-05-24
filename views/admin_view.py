@@ -102,6 +102,8 @@ def admin_view(page: ft.Page):
             description_field.value = ''
             space_field.value = ''
             career_dropdown.value = None
+            load_courses()
+            page.update()
 
         def event(e):
             name = name_field.value.strip()
