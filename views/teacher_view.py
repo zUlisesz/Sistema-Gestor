@@ -15,7 +15,7 @@ def teacher_view(page: ft.Page):
     
     def go_back(e):
         page.data = {'my_user': None}
-        page.go("/")
+        page.navigate("/")
 
     def load_courses():
         data = tctrl.get_my_info_courses(teacher.id) or []
@@ -32,7 +32,7 @@ def teacher_view(page: ft.Page):
             height=200,
             bgcolor="#e0e7ff",
             ink=True,
-            on_click=lambda e: page.go(f"/course/{id}"),
+            on_click=lambda e: page.navigate(f"/course/{id}"),
             data=id,
             border_radius=10,
             alignment=ft.alignment.center,

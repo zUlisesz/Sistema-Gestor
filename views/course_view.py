@@ -205,7 +205,7 @@ def course_view(page: ft.Page, course_id):
             cc.delete_course(course_id)
         elif isinstance(instance, Student):
             std.leave_course(instance.id, course_id)
-        page.go(view)
+        page.navigate(view)
 
     action_button = ft.ElevatedButton(
         text='press',
@@ -256,7 +256,7 @@ def course_view(page: ft.Page, course_id):
                             ft.ElevatedButton(
                                 text="Volver",
                                 icon=ft.Icons.EXIT_TO_APP,
-                                on_click=lambda e: page.go(view),
+                                on_click=lambda e: page.navigate(view),
                                 style=ft.ButtonStyle(
                                     bgcolor="#1e40af",
                                     color="white",

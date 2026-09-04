@@ -31,3 +31,6 @@ python -m unittest discover -s tests -v
 
 El ejecutable y el video originales estan disponibles en el
 [enlace del proyecto](https://drive.google.com/drive/folders/10HgYdZ4ZtwRUo8Sz9LINvQEj0xvGEWMu?usp=sharing).
+
+La app sigue el punto de entrada `main.py` de Flet y puede ejecutarse también
+con `flet run` o `flet run --web`.

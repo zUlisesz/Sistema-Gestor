@@ -66,7 +66,7 @@ def admin_view(page: ft.Page):
             height=200,
             bgcolor="#e0e7ff",
             ink=True,
-            on_click=lambda e: page.go(f"/course/{id}"),
+            on_click=lambda e: page.navigate(f"/course/{id}"),
             data=id,
             border_radius=10,
             alignment=ft.alignment.center,
@@ -80,7 +80,7 @@ def admin_view(page: ft.Page):
         
     def go_back(e):
         page.data = {'my_user': None}
-        page.go('/')
+        page.navigate('/')
 
     def add_course(e):
         name_field = ft.TextField(label='Nombre', width=300)

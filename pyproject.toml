@@ -1,0 +1,17 @@
+[project]
+name = "sistema-gestor"
+version = "1.0.0"
+description = "Aplicacion Flet para gestionar cursos, usuarios e inscripciones"
+requires-python = ">=3.10"
+dependencies = [
+    "flet>=0.85",
+    "bcrypt>=4.0",
+    "mysql-connector-python>=8.0",
+]
+
+[tool.flet]
+product = "Sistema Gestor"
+
+[tool.flet.app]
+module = "main.py"
+path = "."

@@ -66,7 +66,7 @@ def signup_view(page: ft.Page):
         page.update()
 
     def go_back(e):
-        page.go("/")
+        page.navigate("/")
 
     return ft.Column(
         controls=[
