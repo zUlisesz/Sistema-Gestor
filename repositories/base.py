@@ -1,22 +1,41 @@
-#clase padre para poder relizar consultas a la bd
+"""Repositorio base con manejo consistente de conexiones y transacciones."""
+
 from services.database import connect_db
 
+
 class BaseRepository:
-    
-    def __init__(self):
-        self.conn = connect_db() #conexión con la bd
-        self.cursor = self.conn.cursor() # cursor para poder manipula inf de la bd
-        
-    def execute(self , query , parameters = ()): #ejecúta funciones como insert y delete
+    def __init__(self, connection=None):
+        self._owns_connection = connection is None
+        self.conn = connection if connection is not None else connect_db()
+        self.cursor = self.conn.cursor()
+
+    def execute(self, query, parameters=()):
+        try:
+            self.cursor.execute(query, parameters)
+            self.conn.commit()
+            return self.cursor.rowcount
+        except Exception:
+            self.conn.rollback()
+            raise
+
+    def get_one(self, query, parameters=()):
         self.cursor.execute(query, parameters)
-        return self.conn.commit()
-    
-    def get_one(self, query, parameters = ()): #regresa un solo dato de la bd
+        return self.cursor.fetchone()
+
+    def get_all(self, query, parameters=()):
         self.cursor.execute(query, parameters)
-        row = self.cursor.fetchone() 
-        return row
-    
-    def get_all(self , query, parameters = ()): #regresa una tupla o lista de tuplas desde la bd
-        self.cursor.execute( query, parameters)
-        rows = self.cursor.fetchall()
-        return rows    
+        return self.cursor.fetchall()
+
+    def close(self):
+        if getattr(self, "cursor", None) is not None:
+            self.cursor.close()
+            self.cursor = None
+        if self._owns_connection and getattr(self, "conn", None) is not None:
+            self.conn.close()
+            self.conn = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()

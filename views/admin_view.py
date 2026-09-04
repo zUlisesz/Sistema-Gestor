@@ -26,35 +26,34 @@ def admin_view(page: ft.Page):
             ft.DataColumn(ft.Text("Nombre", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
             ft.DataColumn(ft.Text("Correo", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
             ft.DataColumn(ft.Text("Rol", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD)),
-            ft.DataColumn(ft.Text("Contraseña", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD))
         ],
         rows=[]
     )
     
     def fill_table():
         users = actrl.get_all()
+        user_table.rows.clear()
         for element in users:
             new_row = ft.DataRow(
                 cells=[
                     ft.DataCell(ft.Text(str(element[0]))),
                     ft.DataCell(ft.Text(element[1])),
                     ft.DataCell(ft.Text(element[2])),
-                    ft.DataCell(ft.Text(element[3])),
-                    ft.DataCell(ft.Text(element[4]))
+                    ft.DataCell(ft.Text(element[3]))
                 ]
             )
             user_table.rows.append(new_row)
         page.update()
         
     def load_courses():
-        courses = cc.names()
-        id_courses = cc.ids()
-        
-        for i, name_course in enumerate(courses):
-            course_card = create_course_card(name_course, id_courses[i])
-            if len(course_cards_row1.controls) < 6:
+        course_cards_row1.controls.clear()
+        course_cards_row2.controls.clear()
+        course_cards_row3.controls.clear()
+        for index, (course_id, course_name) in enumerate(cc.summaries()):
+            course_card = create_course_card(course_name, course_id)
+            if index < 6:
                 course_cards_row1.controls.append(course_card)
-            elif len(course_cards_row2.controls) <6:
+            elif index < 12:
                 course_cards_row2.controls.append(course_card)
             else:
                 course_cards_row3.controls.append(course_card)
@@ -110,8 +109,12 @@ def admin_view(page: ft.Page):
             description = description_field.value.strip()
             space = space_field.value.strip()
             career = career_dropdown.value
-            if name and description and space and career:
-                cc.make_course(name, description, int(space), career)
+            try:
+                space_value = int(space)
+            except ValueError:
+                return
+            if name and description and space_value > 0 and career:
+                cc.make_course(name, description, space_value, career)
                 page.update()
                 page.close(alert)
 

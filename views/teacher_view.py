@@ -18,15 +18,13 @@ def teacher_view(page: ft.Page):
         page.go("/")
 
     def load_courses():
-        data = tctrl.get_my_info_courses(teacher.id)
-        if data:
-            for element in data:
-                course_card = create_course_card(element[1], element[0])
-                if len(course_cards_row1.controls) < 5:
-                    course_cards_row1.controls.append(course_card)
-                else:
-                    course_cards_row2.controls.append(course_card)
-                page.update()
+        data = tctrl.get_my_info_courses(teacher.id) or []
+        for element in data:
+            course_card = create_course_card(element[1], element[0])
+            if len(course_cards_row1.controls) < 5:
+                course_cards_row1.controls.append(course_card)
+            else:
+                course_cards_row2.controls.append(course_card)
                 
     def create_course_card(name, id):
         return ft.Container(

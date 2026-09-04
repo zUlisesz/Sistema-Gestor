@@ -1,15 +1,15 @@
-#clase que  únicamente almacena datos de un curso cargado desde la bd para poder manipular la inf entre vistas
+"""Entidad de curso."""
+
+
 class Course:
-    def __init__(self, id, name, description, space, career):
+    def __init__(self, id, name, description, space, career, teacher=None):
         self.id_course = id
         self.name = name
         self.description = description
-        self.space = space 
+        self.space = space
         self.career = career
-        
-    def show_myself(self) -> str:
-        return f'id: {self.id_course} - {self.name} -limit: {self.space} - career: {self.career} - teacher: {self.teacher}'
-    
+        self.teacher = teacher
 
-
-
+    def show_myself(self):
+        teacher = self.teacher or "Docente no asignado"
+        return f"id: {self.id_course} - {self.name} - limit: {self.space} - career: {self.career} - teacher: {teacher}"

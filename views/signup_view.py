@@ -6,9 +6,8 @@
 import flet as ft
 from controllers.login_controller import LoginController
 
-controller = LoginController()
-
 def signup_view(page: ft.Page):
+    controller = LoginController()
 
     name_field = ft.TextField(label="Nombre", width=300)
     email_field = ft.TextField(label="Correo electrónico", width=300)
@@ -62,7 +61,8 @@ def signup_view(page: ft.Page):
         success, message = controller.sign_up(name, email, password, rol, career)
         status_text.value = message
         status_text.color = ft.Colors.GREEN if success else ft.Colors.RED
-        reset_values()
+        if success:
+            reset_values()
         page.update()
 
     def go_back(e):

@@ -1,81 +1,41 @@
-#Esta clase heréda de la clase Base y son reutilizados sus métodos para poder hacer consultas a la bd
-from .base import BaseRepository
+"""Consultas de estudiantes."""
+
 from models.student import Student
 
+from .base import BaseRepository
+
+
 class StudentRepository(BaseRepository):
+    STUDENT_COLUMNS = "u.id, u.name, u.mail, u.password, sd.career, sd.average"
+    STUDENT_JOIN = "FROM users u JOIN student_data sd ON u.id = sd.user_id"
 
-    def get_by_career(self, career) -> list:
-        query = """
-            SELECT u.id, u.name, u.mail,u.password, sd.career, sd.average
-            FROM users u
-            JOIN student_data sd ON u.id = sd.user_id
-            WHERE sd.career = %s
-        """
-        rows = self.get_all(query, (career,))
-        return [Student(*row) for row in rows]
+    def _students(self, condition="", parameters=()):
+        query = f"SELECT {self.STUDENT_COLUMNS} {self.STUDENT_JOIN} {condition}"
+        return [Student(*row) for row in self.get_all(query, parameters)]
 
-    def get_approved(self) -> list:
-        query = """
-            SELECT u.id, u.name, u.mail,u.password, sd.career, sd.average
-            FROM users u
-            JOIN student_data sd ON u.id = sd.user_id
-            WHERE sd.average >= 6
-        """
-        rows = self.get_all(query)
-        return [Student(*row) for row in rows]
+    def get_by_career(self, career):
+        return self._students("WHERE sd.career = %s", (career,))
 
-    def get_failed(self) -> list:
-        query = """
-            SELECT u.id, u.name, u.mail,u.password, sd.career, sd.average
-            FROM users u
-            JOIN student_data sd ON u.id = sd.user_id
-            WHERE sd.average < 6
-        """
-        rows = self.get_all(query)
-        return [Student(*row) for row in rows]
+    def get_approved(self):
+        return self._students("WHERE sd.average >= 6")
 
-    def get_excellent(self) -> list:
-        query = """
-            SELECT u.id, u.name, u.mail,u.password, sd.career, sd.average
-            FROM users u
-            JOIN student_data sd ON u.id = sd.user_id
-            WHERE sd.average > 9.4
-        """
-        rows = self.get_all(query)
-        return [Student(*row) for row in rows]
+    def get_failed(self):
+        return self._students("WHERE sd.average < 6")
 
-    def get_by_id(self, user_id) -> Student | None: #métodos con  [row = self.get_one(query, (user_id,))] regresan un solo elemento
-        query = """
-            SELECT u.id, u.name, u.mail,password, sd.career, sd.average
-            FROM users u
-            JOIN student_data sd ON u.id = sd.user_id
-            WHERE u.id = %s
-        """
-        row = self.get_one(query, (user_id,))
-        return Student(*row) if row else None 
-    
-    def get_by_mail(self, mail) -> Student | None: #métodos con [row = self.get_one(query, (mail,))] regresan listas
-        query = """
-            SELECT u.id, u.name, u.mail,password, sd.career, sd.average
-            FROM users u
-            JOIN student_data sd ON u.id = sd.user_id
-            WHERE u.mail = %s
-        """ 
-        row = self.get_one(query, (mail,))
-        return Student(*row) if row else None 
+    def get_excellent(self):
+        return self._students("WHERE sd.average > 9.4")
 
-    def get_all_students(self) -> list:
-        query = """
-            SELECT u.id, u.name, u.mail,password, sd.career, sd.average
-            FROM users u
-            JOIN student_data sd ON u.id = sd.user_id
-        """
-        rows = self.get_all(query)
-        return [Student(*row) for row in rows]
-    
+    def get_by_id(self, user_id):
+        students = self._students("WHERE u.id = %s", (user_id,))
+        return students[0] if students else None
+
+    def get_by_mail(self, mail):
+        students = self._students("WHERE u.mail = %s", (mail,))
+        return students[0] if students else None
+
+    def get_all_students(self):
+        return self._students()
+
     def name_byMail(self, mail):
-        query = 'SELECT name FROM gestor.users WHERE mail = %s'
-        row = self.get_one(query, (mail,))
-        return row[0]
-     
-
+        row = self.get_one("SELECT name FROM users WHERE mail = %s", (mail,))
+        return row[0] if row else None

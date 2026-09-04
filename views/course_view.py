@@ -18,6 +18,14 @@ def course_view(page: ft.Page, course_id):
     tc = TeacherController()
     course = cc.create_course(course_id) 
 
+    if course is None:
+        return ft.View(
+            route=f"/course/{course_id}",
+            controls=[ft.Text("Curso no encontrado", size=24)],
+            vertical_alignment=ft.MainAxisAlignment.CENTER,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        )
+
     instance = page.data['my_user']
     
     docente = ft.Text(f"Docente: {adm.get_courses_teacher(course_id)}", size=16, color= ft.Colors.WHITE)
@@ -42,12 +50,12 @@ def course_view(page: ft.Page, course_id):
             page.update()
         
         def event(e):
-            name = name_field.value.strip()
-            description = description_field.value.strip()
-            if name and description:
-                tc.make_post(name, description, course_id)
-                page.close(alert)
-            
+            name = (name_field.value or '').strip()
+            description = (description_field.value or '').strip()
+            if not name or not description:
+                return
+            tc.make_post(name, description, course_id)
+            page.close(alert)
             load_notices()
             page.update()
                 
@@ -160,6 +168,8 @@ def course_view(page: ft.Page, course_id):
         page.update()
         
     def add_teacher(e):
+        if not dropdown_teachers.value:
+            return
         pre_id = dropdown_teachers.value.partition(' - ')
         teacher_id = int(pre_id[0])
         adm.assign_teacher(

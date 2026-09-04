@@ -34,16 +34,14 @@ def student_view(page: ft.Page):
 
 
     def load_courses():
-        courses = std.get_courses_name(student.id)
-        id_courses = std.get_courses_id(student.id)
-        if courses:
-            for i, name_course in enumerate(courses):
-                course_card = create_course_card(name_course, id_courses[i])
-                if len(course_cards_row1.controls) < 5:
-                    course_cards_row1.controls.append(course_card)
-                else:
-                    course_cards_row2.controls.append(course_card)
-                page.update()
+        courses = std.get_courses_name(student.id) or []
+        id_courses = std.get_courses_id(student.id) or []
+        for course_id, name_course in zip(id_courses, courses):
+            course_card = create_course_card(name_course, course_id)
+            if len(course_cards_row1.controls) < 5:
+                course_cards_row1.controls.append(course_card)
+            else:
+                course_cards_row2.controls.append(course_card)
 
     def create_course_card(course_name, id):
         return ft.Container(
@@ -75,7 +73,14 @@ def student_view(page: ft.Page):
             page.close(alert)
 
         def event(e):
-            course_id = int(id_course_field.value)
+            try:
+                course_id = int((id_course_field.value or '').strip())
+            except ValueError:
+                status_text.value = 'El id del curso debe ser numerico'
+                status_text.color = ft.Colors.RED_200
+                status_text.visible = True
+                page.update()
+                return
             
             if std.enter_to_course(student.id, course_id):
                 course_name = std.get_course(course_id)
